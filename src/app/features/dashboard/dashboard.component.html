@@ -1,0 +1,78 @@
+<div class="dashboard">
+  <header>
+    <h1>Olá, {{ nome() }}</h1>
+    <button (click)="logout()">Sair</button>
+  </header>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  @if (erro()) {
+    <p class="erro">{{ erro() }}</p>
+  }
+
+  @if (!carregando()) {
+
+    <!-- Visão do BARBEIRO -->
+    @if (!isDono()) {
+      <section class="resumo">
+        <h2>Comissão do mês</h2>
+        <p class="valor-destaque">R$ {{ minhaComissaoTotal().toFixed(2) }}</p>
+      </section>
+
+      <a routerLink="/novo-atendimento" class="botao-principal">+ Novo Atendimento</a>
+
+      <section class="lista">
+        <h2>Meus atendimentos</h2>
+        @for (atendimento of meusAtendimentos(); track atendimento.id) {
+          <div class="item">
+            <strong>{{ atendimento.nomeCliente || 'Cliente não informado' }}</strong>
+            <span>{{ atendimento.nomesServicos.join(', ') }}</span>
+            <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
+          </div>
+        } @empty {
+          <p>Nenhum atendimento registrado esse mês ainda.</p>
+        }
+      </section>
+    }
+
+    <!-- Visão do DONO -->
+    @if (isDono()) {
+      @if (fechamento(); as f) {
+        <section class="resumo">
+          <h2>Fechamento do mês</h2>
+          <p>Faturamento total: <strong>R$ {{ f.faturamentoTotal.toFixed(2) }}</strong></p>
+          <p>Comissões: <strong>R$ {{ f.totalComissoes.toFixed(2) }}</strong></p>
+          <p>Despesas: <strong>R$ {{ f.totalDespesas.toFixed(2) }}</strong></p>
+          <p class="valor-destaque">Saldo líquido: R$ {{ f.saldoLiquido.toFixed(2) }}</p>
+        </section>
+
+        <section class="lista">
+          <h2>Comissão por barbeiro</h2>
+          @for (c of f.comissoesPorBarbeiro; track c.barbeiroId) {
+            <div class="item">
+              <strong>{{ c.nomeBarbeiro }}</strong>
+              <span>R$ {{ c.totalComissao.toFixed(2) }}</span>
+            </div>
+          }
+        </section>
+      }
+
+      <a routerLink="/novo-atendimento" class="botao-principal">+ Novo Atendimento</a>
+
+      <section class="lista">
+        <h2>Últimos atendimentos</h2>
+        @for (atendimento of ultimosAtendimentos(); track atendimento.id) {
+          <div class="item">
+            <strong>{{ atendimento.barbeiroNome }}</strong>
+            <span>{{ atendimento.nomeCliente || 'Cliente não informado' }} · {{ atendimento.nomesServicos.join(', ') }}</span>
+            <span>R$ {{ atendimento.valorTotal.toFixed(2) }}</span>
+          </div>
+        } @empty {
+          <p>Nenhum atendimento registrado esse mês ainda.</p>
+        }
+      </section>
+    }
+  }
+</div>

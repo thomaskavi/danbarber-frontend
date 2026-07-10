@@ -1,0 +1,62 @@
+<div class="novo-atendimento">
+  <header>
+    <h1>Novo Atendimento</h1>
+  </header>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  @if (erro()) {
+    <p class="erro">{{ erro() }}</p>
+  }
+
+  @if (!carregando()) {
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+
+      @if (isDono()) {
+        <label for="barbeiro">Barbeiro</label>
+        <select id="barbeiro" formControlName="barbeiroId">
+          <option [ngValue]="null">Selecione...</option>
+          @for (b of barbeiros(); track b.id) {
+            <option [ngValue]="b.id">{{ b.nome }}</option>
+          }
+        </select>
+      }
+
+      <label for="nomeCliente">Cliente (opcional)</label>
+      <input id="nomeCliente" type="text" formControlName="nomeCliente" />
+
+      <label>Serviços</label>
+      <div class="lista-servicos">
+        @for (servico of servicos(); track servico.id) {
+          <label class="checkbox-servico">
+            <input
+              type="checkbox"
+              [checked]="servicoSelecionado(servico.id)"
+              (change)="alternarServico(servico.id)"
+            />
+            {{ servico.nome }} — R$ {{ servico.preco.toFixed(2) }}
+          </label>
+        }
+      </div>
+
+      <p class="valor-destaque">Total: R$ {{ valorTotalEstimado().toFixed(2) }}</p>
+
+      <label for="formaPagamento">Forma de pagamento</label>
+      <select id="formaPagamento" formControlName="formaPagamento">
+        <option value="">Selecione...</option>
+        @for (forma of formasPagamento; track forma) {
+          <option [value]="forma">{{ forma }}</option>
+        }
+      </select>
+
+      <label for="observacao">Observação (opcional)</label>
+      <textarea id="observacao" formControlName="observacao"></textarea>
+
+      <button type="submit" [disabled]="form.invalid || enviando()">
+        {{ enviando() ? 'Salvando...' : 'Registrar atendimento' }}
+      </button>
+    </form>
+  }
+</div>
