@@ -1,0 +1,106 @@
+<div class="despesas">
+
+  <header>
+    <h1>Despesas</h1>
+    <a routerLink="/dashboard">Voltar</a>
+  </header>
+
+  <section class="form-despesa">
+    <h2>{{ despesaEmEdicao() ? 'Editar despesa' : 'Nova despesa' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      <label for="descricao">Descrição</label>
+      <input id="descricao" type="text" formControlName="descricao" />
+
+      <label for="valor">Valor</label>
+      <input id="valor" type="number" step="0.01" formControlName="valor" />
+
+      <label for="data">Data</label>
+      <input id="data" type="date" formControlName="data" />
+
+      <label for="categoria">Categoria (opcional)</label>
+      <input id="categoria" type="text" formControlName="categoria" placeholder="Ex: Aluguel, Produtos..." />
+
+      @if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      }
+
+      <div class="acoes-form">
+        <button type="submit" [disabled]="form.invalid || enviando()">
+          {{
+            enviando()
+              ? 'Salvando...'
+              : despesaEmEdicao()
+                ? 'Salvar alterações'
+                : 'Registrar despesa'
+          }}
+        </button>
+
+        @if (despesaEmEdicao()) {
+          <button type="button" (click)="cancelarEdicao()">Cancelar</button>
+        }
+      </div>
+    </form>
+  </section>
+
+  <section class="filtro">
+    <h2>Período</h2>
+
+    <div class="atalhos">
+      <button type="button" (click)="aplicarAtalho(7)">Últimos 7 dias</button>
+      <button type="button" (click)="aplicarAtalho(15)">Últimos 15 dias</button>
+      <button type="button" (click)="aplicarAtalho(30)">Últimos 30 dias</button>
+      <button type="button" (click)="aplicarAtalhoMesAtual()">Mês atual</button>
+    </div>
+
+    <label for="filtroInicio">De</label>
+    <input
+      id="filtroInicio"
+      type="date"
+      [value]="filtroInicio()"
+      (change)="atualizarFiltroInicio($any($event.target).value)"
+    />
+
+    <label for="filtroFim">Até</label>
+    <input
+      id="filtroFim"
+      type="date"
+      [value]="filtroFim()"
+      (change)="atualizarFiltroFim($any($event.target).value)"
+    />
+
+    <button type="button" (click)="carregar()">Filtrar</button>
+  </section>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  <section class="lista">
+    <p class="valor-destaque">
+      Total no período: <strong>R$ {{ totalDespesas().toFixed(2) }}</strong>
+    </p>
+
+    @for (despesa of despesas(); track despesa.id) {
+      <div class="item">
+        <div>
+          <strong>{{ despesa.descricao }}</strong>
+          <br>
+          <small>{{ despesa.categoria || 'Sem categoria' }} • {{ despesa.data }}</small>
+        </div>
+
+        <div>
+          <strong>R$ {{ despesa.valor.toFixed(2) }}</strong>
+        </div>
+
+        <div class="acoes-item">
+          <button type="button" (click)="editar(despesa)">✏️ Editar</button>
+          <button type="button" (click)="excluir(despesa.id)">🗑️ Excluir</button>
+        </div>
+      </div>
+    } @empty {
+      <p>Nenhuma despesa encontrada.</p>
+    }
+  </section>
+
+</div>

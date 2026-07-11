@@ -7,11 +7,12 @@ import { AtendimentoService } from '../../core/services/atendimento.service';
 import { ServicoService } from '../../core/services/servico.service';
 import { UsuarioService, UsuarioResponse } from '../../core/services/usuario.service';
 import { ServicoResponse, FormaPagamento } from '../../models/models';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-novo-atendimento',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './novo-atendimento.component.html',
 })
 export class NovoAtendimentoComponent implements OnInit {

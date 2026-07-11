@@ -22,17 +22,18 @@
       </section>
 
       <a routerLink="/novo-atendimento" class="botao-principal">+ Novo Atendimento</a>
+      <a routerLink="/historico">Ver histórico completo</a>
 
       <section class="lista">
-        <h2>Meus atendimentos</h2>
-        @for (atendimento of meusAtendimentos(); track atendimento.id) {
+        <h2>Atendimentos de hoje</h2>
+        @for (atendimento of atendimentosHoje(); track atendimento.id) {
           <div class="item">
             <strong>{{ atendimento.nomeCliente || 'Cliente não informado' }}</strong>
             <span>{{ atendimento.nomesServicos.join(', ') }}</span>
             <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
           </div>
         } @empty {
-          <p>Nenhum atendimento registrado esse mês ainda.</p>
+          <p>Nenhum atendimento hoje ainda.</p>
         }
       </section>
     }
@@ -41,6 +42,8 @@
     @if (isDono()) {
       @if (fechamento(); as f) {
         <section class="resumo">
+          <a routerLink="/despesas">Gerenciar Despesas</a>
+          <a routerLink="/servicos">Gerenciar Serviços</a>
           <h2>Fechamento do mês</h2>
           <p>Faturamento total: <strong>R$ {{ f.faturamentoTotal.toFixed(2) }}</strong></p>
           <p>Comissões: <strong>R$ {{ f.totalComissoes.toFixed(2) }}</strong></p>
@@ -49,7 +52,7 @@
         </section>
 
         <section class="lista">
-          <h2>Comissão por barbeiro</h2>
+          <h2>Comissão por barbeiro (mês)</h2>
           @for (c of f.comissoesPorBarbeiro; track c.barbeiroId) {
             <div class="item">
               <strong>{{ c.nomeBarbeiro }}</strong>
@@ -60,17 +63,18 @@
       }
 
       <a routerLink="/novo-atendimento" class="botao-principal">+ Novo Atendimento</a>
+      <a routerLink="/historico">Ver histórico completo</a>
 
       <section class="lista">
-        <h2>Últimos atendimentos</h2>
-        @for (atendimento of ultimosAtendimentos(); track atendimento.id) {
+        <h2>Atendimentos de hoje</h2>
+        @for (atendimento of atendimentosHoje(); track atendimento.id) {
           <div class="item">
             <strong>{{ atendimento.barbeiroNome }}</strong>
             <span>{{ atendimento.nomeCliente || 'Cliente não informado' }} · {{ atendimento.nomesServicos.join(', ') }}</span>
             <span>R$ {{ atendimento.valorTotal.toFixed(2) }}</span>
           </div>
         } @empty {
-          <p>Nenhum atendimento registrado esse mês ainda.</p>
+          <p>Nenhum atendimento hoje ainda.</p>
         }
       </section>
     }

@@ -1,0 +1,64 @@
+<div class="historico">
+  <header>
+    <h1>Histórico</h1>
+    <a routerLink="/dashboard">Voltar</a>
+  </header>
+
+  <section class="filtro">
+    <div class="atalhos">
+      <button type="button" (click)="aplicarAtalho(7)">Últimos 7 dias</button>
+      <button type="button" (click)="aplicarAtalho(15)">Últimos 15 dias</button>
+      <button type="button" (click)="aplicarAtalho(30)">Últimos 30 dias</button>
+    </div>
+
+    <label for="inicio">De</label>
+    <input
+      id="inicio"
+      type="date"
+      [value]="filtroInicio()"
+      (change)="atualizarFiltroInicio($any($event.target).value)"
+    />
+
+    <label for="fim">Até</label>
+    <input
+      id="fim"
+      type="date"
+      [value]="filtroFim()"
+      (change)="atualizarFiltroFim($any($event.target).value)"
+    />
+
+    <button type="button" (click)="filtrar()">Filtrar</button>
+  </section>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  @if (erro()) {
+    <p class="erro">{{ erro() }}</p>
+  }
+
+  @if (jaFiltrou() && !carregando()) {
+    <section class="resumo">
+      <p>Total faturado: <strong>R$ {{ valorTotalPeriodo().toFixed(2) }}</strong></p>
+      @if (!isDono()) {
+        <p>Sua comissão no período: <strong>R$ {{ comissaoTotalPeriodo().toFixed(2) }}</strong></p>
+      }
+    </section>
+
+    <section class="lista">
+      @for (atendimento of atendimentos(); track atendimento.id) {
+        <div class="item">
+          @if (isDono()) {
+            <strong>{{ atendimento.barbeiroNome }}</strong>
+          }
+          <span>{{ atendimento.dataHora | slice:0:10 }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
+          <span>{{ atendimento.nomesServicos.join(', ') }}</span>
+          <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
+        </div>
+      } @empty {
+        <p>Nenhum atendimento encontrado nesse período.</p>
+      }
+    </section>
+  }
+</div>

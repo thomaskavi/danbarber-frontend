@@ -5,7 +5,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { AtendimentoService } from '../../core/services/atendimento.service';
 import { FechamentoService, FechamentoMensal } from '../../core/services/fechamento.service';
 import { AtendimentoResponse } from '../../models/models';
-import { mesAtualComoDateTime, mesAtualComoDate } from '../../core/utils/date-utils';
+import { mesAtualComoDateTime, mesAtualComoDate, hojeComoDateTime } from '../../core/utils/date-utils';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,15 +25,14 @@ export class DashboardComponent implements OnInit {
   carregando = signal(true);
   erro = signal<string | null>(null);
 
-  // Usado pelo BARBEIRO
-  meusAtendimentos = signal<AtendimentoResponse[]>([]);
-  minhaComissaoTotal = computed(() =>
-    this.meusAtendimentos().reduce((soma, a) => soma + a.valorComissao, 0)
-  );
+  // Total do MÊS (não aparece como lista, só o valor agregado)
+  minhaComissaoTotal = signal(0);
+
+  // Lista do DIA — isso que aparece no dashboard agora
+  atendimentosHoje = signal<AtendimentoResponse[]>([]);
 
   // Usado pelo DONO
   fechamento = signal<FechamentoMensal | null>(null);
-  ultimosAtendimentos = signal<AtendimentoResponse[]>([]);
 
   ngOnInit() {
     if (this.isDono()) {
@@ -44,18 +43,28 @@ export class DashboardComponent implements OnInit {
   }
 
   private carregarVisaoBarbeiro() {
-    const { inicio, fim } = mesAtualComoDateTime();
+    const mes = mesAtualComoDateTime();
+    const hoje = hojeComoDateTime();
 
-    this.atendimentoService.listarMeus(inicio, fim).subscribe({
+    // Chamada 1: total de comissão do MÊS (só usamos a soma, não exibimos a lista)
+    this.atendimentoService.listarMeus(mes.inicio, mes.fim).subscribe({
       next: (atendimentos) => {
-        // Mais recentes primeiro
-        this.meusAtendimentos.set(
+        const total = atendimentos.reduce((soma, a) => soma + a.valorComissao, 0);
+        this.minhaComissaoTotal.set(total);
+      },
+      error: () => this.erro.set('Não foi possível carregar a comissão do mês'),
+    });
+
+    // Chamada 2: atendimentos de HOJE, pra exibir na lista
+    this.atendimentoService.listarMeus(hoje.inicio, hoje.fim).subscribe({
+      next: (atendimentos) => {
+        this.atendimentosHoje.set(
           [...atendimentos].sort((a, b) => b.dataHora.localeCompare(a.dataHora))
         );
         this.carregando.set(false);
       },
       error: () => {
-        this.erro.set('Não foi possível carregar seus atendimentos');
+        this.erro.set('Não foi possível carregar os atendimentos de hoje');
         this.carregando.set(false);
       },
     });
@@ -63,23 +72,24 @@ export class DashboardComponent implements OnInit {
 
   private carregarVisaoDono() {
     const { inicio: inicioData, fim: fimData } = mesAtualComoDate();
-    const { inicio: inicioDateTime, fim: fimDateTime } = mesAtualComoDateTime();
+    const hoje = hojeComoDateTime();
 
+    // Fechamento continua sendo do MÊS (faturamento, comissões, saldo)
     this.fechamentoService.gerarFechamento(inicioData, fimData).subscribe({
       next: (resultado) => this.fechamento.set(resultado),
       error: () => this.erro.set('Não foi possível carregar o fechamento'),
     });
 
-    this.atendimentoService.listarPorPeriodo(inicioDateTime, fimDateTime).subscribe({
+    // Lista de atendimentos: só os de HOJE, de todos os barbeiros
+    this.atendimentoService.listarPorPeriodo(hoje.inicio, hoje.fim).subscribe({
       next: (atendimentos) => {
-        const recentes = [...atendimentos]
-          .sort((a, b) => b.dataHora.localeCompare(a.dataHora))
-          .slice(0, 10);
-        this.ultimosAtendimentos.set(recentes);
+        this.atendimentosHoje.set(
+          [...atendimentos].sort((a, b) => b.dataHora.localeCompare(a.dataHora))
+        );
         this.carregando.set(false);
       },
       error: () => {
-        this.erro.set('Não foi possível carregar os atendimentos recentes');
+        this.erro.set('Não foi possível carregar os atendimentos de hoje');
         this.carregando.set(false);
       },
     });

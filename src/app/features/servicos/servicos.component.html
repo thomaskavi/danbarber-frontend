@@ -1,0 +1,85 @@
+<div class="servicos">
+
+  <header>
+    <h1>Serviços</h1>
+    <a routerLink="/dashboard">Voltar</a>
+  </header>
+
+  <section class="form-servico">
+    <h2>{{ servicoEmEdicao() ? 'Editar serviço' : 'Novo serviço' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      <label for="nome">Nome</label>
+      <input id="nome" type="text" formControlName="nome" placeholder="Ex: Corte, Barba..." />
+
+      <label for="preco">Preço</label>
+      <input id="preco" type="number" step="0.01" formControlName="preco" />
+
+      @if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      }
+
+      <div class="acoes-form">
+        <button type="submit" [disabled]="form.invalid || enviando()">
+          {{
+            enviando()
+              ? 'Salvando...'
+              : servicoEmEdicao()
+                ? 'Salvar alterações'
+                : 'Adicionar serviço'
+          }}
+        </button>
+
+        @if (servicoEmEdicao()) {
+          <button type="button" (click)="cancelarEdicao()">Cancelar</button>
+        }
+      </div>
+    </form>
+  </section>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  <section class="lista">
+    <h2>Serviços ativos</h2>
+
+    @for (servico of servicos(); track servico.id) {
+      <div class="item">
+        <strong>{{ servico.nome }}</strong>
+        <span>R$ {{ servico.preco.toFixed(2) }}</span>
+
+        <div class="acoes-item">
+          <button type="button" (click)="editar(servico)">✏️ Editar</button>
+          <button type="button" (click)="desativar(servico)">🚫 Desativar</button>
+        </div>
+      </div>
+    } @empty {
+      <p>Nenhum serviço cadastrado ainda.</p>
+    }
+  </section>
+
+  <section class="lista">
+    <button type="button" (click)="alternarInativos()">
+      {{ mostrarInativos() ? 'Ocultar desativados' : 'Ver serviços desativados' }}
+    </button>
+
+    @if (mostrarInativos()) {
+      <h2>Serviços desativados</h2>
+
+      @for (servico of servicosInativos(); track servico.id) {
+        <div class="item">
+          <strong>{{ servico.nome }}</strong>
+          <span>R$ {{ servico.preco.toFixed(2) }}</span>
+
+          <div class="acoes-item">
+            <button type="button" (click)="reativar(servico)">♻️ Reativar</button>
+          </div>
+        </div>
+      } @empty {
+        <p>Nenhum serviço desativado no momento.</p>
+      }
+    }
+  </section>
+
+</div>
