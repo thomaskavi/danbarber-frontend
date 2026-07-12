@@ -1,0 +1,48 @@
+.card,
+.resumo,
+.lista,
+.form-despesa,
+.form-servico,
+.filtro{
+
+    background:var(--surface);
+
+    border-radius:var(--radius);
+
+    padding:24px;
+
+    box-shadow:var(--shadow);
+
+    margin-bottom:24px;
+
+}
+
+.item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 0;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.item:last-child{
+
+    border:none;
+
+}
+
+.valor-destaque{
+
+    font-size:2rem;
+
+    font-weight:bold;
+
+    color:var(--primary);
+
+}

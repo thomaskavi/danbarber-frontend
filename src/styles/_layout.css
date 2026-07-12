@@ -1,0 +1,39 @@
+.dashboard,
+.historico,
+.novo-atendimento,
+.despesas,
+.servicos{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:40px 24px;
+
+}
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+header h1{
+
+    font-size:2rem;
+
+    color:var(--primary);
+
+}
+
+section{
+
+    margin-top:25px;
+
+}

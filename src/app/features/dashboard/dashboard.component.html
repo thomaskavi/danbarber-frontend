@@ -20,10 +20,10 @@
         <h2>Comissão do mês</h2>
         <p class="valor-destaque">R$ {{ minhaComissaoTotal().toFixed(2) }}</p>
       </section>
-
-      <a routerLink="/novo-atendimento" class="botao-principal">+ Novo Atendimento</a>
-      <a routerLink="/historico">Ver histórico completo</a>
-
+      <div class="acoes-topo">
+        <a routerLink="/novo-atendimento" class="botao-secundario">+ Novo Atendimento</a>
+        <a routerLink="/historico">Ver histórico completo</a>
+      </div>
       <section class="lista">
         <h2>Atendimentos de hoje</h2>
         @for (atendimento of atendimentosHoje(); track atendimento.id) {
@@ -42,8 +42,10 @@
     @if (isDono()) {
       @if (fechamento(); as f) {
         <section class="resumo">
-          <a routerLink="/despesas">Gerenciar Despesas</a>
-          <a routerLink="/servicos">Gerenciar Serviços</a>
+          <div class="acoes-topo">
+            <button class="botao-principal" routerLink="/despesas">Gerenciar Despesas</button>
+            <button class="botao-principal" routerLink="/servicos">Gerenciar Serviços</button>
+          </div>
           <h2>Fechamento do mês</h2>
           <p>Faturamento total: <strong>R$ {{ f.faturamentoTotal.toFixed(2) }}</strong></p>
           <p>Comissões: <strong>R$ {{ f.totalComissoes.toFixed(2) }}</strong></p>
@@ -62,8 +64,10 @@
         </section>
       }
 
-      <a routerLink="/novo-atendimento" class="botao-principal">+ Novo Atendimento</a>
-      <a routerLink="/historico">Ver histórico completo</a>
+      <div class="acoes-topo">
+        <a routerLink="/novo-atendimento" class="botao-secundario">+ Novo Atendimento</a>
+        <a routerLink="/historico">Ver histórico completo</a>
+      </div>
 
       <section class="lista">
         <h2>Atendimentos de hoje</h2>
