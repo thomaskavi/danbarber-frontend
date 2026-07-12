@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.production';
+import { environment } from '../../../environments/environment';
 import { LoginRequest, LoginResponse } from '../../models/models';
 
 const CHAVE_TOKEN = 'danbarber_token';
@@ -11,6 +11,7 @@ const CHAVE_ROLE = 'danbarber_role';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+  
   // Signals: qualquer componente que ler esses valores atualiza sozinho quando eles mudam
   private tokenSignal = signal<string | null>(localStorage.getItem(CHAVE_TOKEN));
   private nomeSignal = signal<string | null>(localStorage.getItem(CHAVE_NOME));
@@ -28,6 +29,8 @@ export class AuthService {
     // O componente de login chama .subscribe() nisso e, no sucesso,
     // chama salvarSessao(resposta) — ver login.component.ts abaixo
     return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, dto);
+
+
   }
 
   salvarSessao(resposta: LoginResponse) {

@@ -1,6 +1,11 @@
 // Utilitários de data para conversar com o backend, que espera dois formatos diferentes:
 // - LocalDateTime (atendimentos): "yyyy-MM-ddTHH:mm:ss"
 // - LocalDate (despesas e fechamento): "yyyy-MM-dd"
+//
+// Importante: esses formatos ISO são para LÓGICA (backend, ordenação, filtros, inputs).
+// Nunca mude isso para dd/MM/yyyy — quebraria a ordenação por string e a comunicação com a API.
+// Para EXIBIR datas na tela em português, use formatarParaExibicao() / formatarDataHoraParaExibicao()
+// lá embaixo, só na hora de mostrar pro usuário.
 
 function pad(n: number): string {
   return n.toString().padStart(2, '0');
@@ -25,6 +30,16 @@ export function mesAtualComoDate(): { inicio: string; fim: string } {
   const agora = new Date();
   const primeiroDia = new Date(agora.getFullYear(), agora.getMonth(), 1);
   const ultimoDia = new Date(agora.getFullYear(), agora.getMonth() + 1, 0);
+
+  return { inicio: formatarData(primeiroDia), fim: formatarData(ultimoDia) };
+}
+
+// Mês seguinte inteiro (do dia 1 ao último dia) — útil para despesas já programadas,
+// tipo aluguel ou contas fixas do próximo mês
+export function proximoMesComoDate(): { inicio: string; fim: string } {
+  const agora = new Date();
+  const primeiroDia = new Date(agora.getFullYear(), agora.getMonth() + 1, 1);
+  const ultimoDia = new Date(agora.getFullYear(), agora.getMonth() + 2, 0);
 
   return { inicio: formatarData(primeiroDia), fim: formatarData(ultimoDia) };
 }
@@ -55,4 +70,29 @@ export function dataMenosDias(dias: number): string {
   const data = new Date();
   data.setDate(data.getDate() - dias);
   return formatarData(data);
+}
+
+// Data de N dias à frente no formato yyyy-MM-dd — usado para atalhos de período futuro
+// (ex: dataMaisDias(31) para "próximos 31 dias")
+export function dataMaisDias(dias: number): string {
+  const data = new Date();
+  data.setDate(data.getDate() + dias);
+  return formatarData(data);
+}
+
+// ── Funções de EXIBIÇÃO (só para mostrar na tela, nunca para lógica/filtros) ──
+
+// Converte "yyyy-MM-dd" para "dd/MM/yyyy"
+export function formatarParaExibicao(dataIso: string): string {
+  const [ano, mes, dia] = dataIso.split('T')[0].split('-');
+  return `${dia}/${mes}/${ano}`;
+}
+
+// Converte "yyyy-MM-ddTHH:mm:ss" (ou com frações de segundo, tipo o LocalDateTime do Java)
+// para "dd/MM/yyyy HH:mm"
+export function formatarDataHoraParaExibicao(dataHoraIso: string): string {
+  const [dataParte, horaParte] = dataHoraIso.split('T');
+  const [ano, mes, dia] = dataParte.split('-');
+  const [hora, minuto] = horaParte.split(':');
+  return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
 }

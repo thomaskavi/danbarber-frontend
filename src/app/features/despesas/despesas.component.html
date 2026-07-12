@@ -47,10 +47,9 @@
     <h2>Período</h2>
 
     <div class="atalhos">
-      <button type="button" (click)="aplicarAtalho(7)">Últimos 7 dias</button>
+      <button type="button" (click)="aplicarAtalhoProximoMes()">Próximo mês</button>
+      <button type="button" (click)="aplicarAtalhoProximos(31)">Próximos 31 dias</button>
       <button type="button" (click)="aplicarAtalho(15)">Últimos 15 dias</button>
-      <button type="button" (click)="aplicarAtalho(30)">Últimos 30 dias</button>
-      <button type="button" (click)="aplicarAtalhoMesAtual()">Mês atual</button>
     </div>
 
     <label for="filtroInicio">De</label>

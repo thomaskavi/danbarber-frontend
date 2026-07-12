@@ -52,9 +52,10 @@
           @if (isDono()) {
             <strong>{{ atendimento.barbeiroNome }}</strong>
           }
-          <span>{{ atendimento.dataHora | slice:0:10 }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
+          <span>{{ atendimento.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
           <span>{{ atendimento.nomesServicos.join(', ') }}</span>
           <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
+          <span> {{atendimento.observacao || 'Sem observação'}}</span>
         </div>
       } @empty {
         <p>Nenhum atendimento encontrado nesse período.</p>

@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DespesaService } from '../../core/services/despesa.service';
 import { DespesaResponse } from '../../models/despesa.models';
-import { mesAtualComoDate, hojeComoDate, dataMenosDias } from '../../core/utils/date-utils';
+import { mesAtualComoDate, proximoMesComoDate, hojeComoDate, dataMenosDias, dataMaisDias } from '../../core/utils/date-utils';
 
 @Component({
   selector: 'app-despesas',
@@ -78,8 +78,22 @@ export class DespesasComponent implements OnInit {
     this.carregar();
   }
 
-  aplicarAtalhoMesAtual() {
+  // Útil para despesas futuras já planejadas/agendadas (ex: aluguel do próximo mês)
+  aplicarAtalhoProximos(dias: number) {
+    this.filtroInicio.set(hojeComoDate());
+    this.filtroFim.set(dataMaisDias(dias));
+    this.carregar();
+  }
+
+  /*aplicarAtalhoMesAtual() {
     const { inicio, fim } = mesAtualComoDate();
+    this.filtroInicio.set(inicio);
+    this.filtroFim.set(fim);
+    this.carregar();
+  }*/
+
+  aplicarAtalhoProximoMes() {
+    const { inicio, fim } = proximoMesComoDate();
     this.filtroInicio.set(inicio);
     this.filtroFim.set(fim);
     this.carregar();
