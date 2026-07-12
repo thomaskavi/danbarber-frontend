@@ -19,8 +19,7 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "public",
-              "public/_redirects"
+              "public"
             ],
             "styles": ["src/styles.css"]
           },
