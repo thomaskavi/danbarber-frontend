@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.production';
 import { LoginRequest, LoginResponse } from '../../models/models';
 
 const CHAVE_TOKEN = 'danbarber_token';
