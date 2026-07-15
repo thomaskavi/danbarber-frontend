@@ -14,8 +14,8 @@
 
   @if (!carregando()) {
 
-    <!-- Visão do BARBEIRO -->
-    @if (!isDono()) {
+    <!-- Visão do FUNCIONARIO -->
+    @if (!isEmpregador()) {
       <section class="resumo">
         <h2>Comissão do mês</h2>
         <p class="valor-destaque">R$ {{ minhaComissaoTotal().toFixed(2) }}</p>
@@ -38,8 +38,8 @@
       </section>
     }
 
-    <!-- Visão do DONO -->
-    @if (isDono()) {
+    <!-- Visão do EMPREGADOR -->
+    @if (isEmpregador()) {
       @if (fechamento(); as f) {
         <section class="resumo">
           <div class="acoes-topo">
@@ -54,10 +54,10 @@
         </section>
 
         <section class="lista">
-          <h2>Comissão por barbeiro (mês)</h2>
-          @for (c of f.comissoesPorBarbeiro; track c.barbeiroId) {
+          <h2>Comissão por funcionario (mês)</h2>
+          @for (c of f.comissoesPorFuncionario; track c.FuncionarioId) {
             <div class="item">
-              <strong>{{ c.nomeBarbeiro }}</strong>
+              <strong>{{ c.nomeFuncionario }}</strong>
               <span>R$ {{ c.totalComissao.toFixed(2) }}</span>
             </div>
           }
@@ -73,7 +73,7 @@
         <h2>Atendimentos de hoje</h2>
         @for (atendimento of atendimentosHoje(); track atendimento.id) {
           <div class="item">
-            <strong>{{ atendimento.barbeiroNome }}</strong>
+            <strong>{{ atendimento.funcionarioNome }}</strong>
             <span>{{ atendimento.nomeCliente || 'Cliente não informado' }} · {{ atendimento.nomesServicos.join(', ') }}</span>
             <span>R$ {{ atendimento.valorTotal.toFixed(2) }}</span>
           </div>

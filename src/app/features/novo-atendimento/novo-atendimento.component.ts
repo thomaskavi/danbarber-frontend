@@ -24,10 +24,10 @@ export class NovoAtendimentoComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private router = inject(Router);
 
-  readonly isDono = this.authService.isDono;
+  readonly isEmpregador = this.authService.isEmpregador;
 
   servicos = signal<ServicoResponse[]>([]);
-  barbeiros = signal<UsuarioResponse[]>([]);
+  funcionarios = signal<UsuarioResponse[]>([]);
   servicosSelecionados = signal<Set<number>>(new Set());
 
   carregando = signal(true);
@@ -45,7 +45,7 @@ export class NovoAtendimentoComponent implements OnInit {
   });
 
   form = this.fb.group({
-    barbeiroId: [null as number | null],
+    funcionarioId: [null as number | null],
     nomeCliente: [''],
     formaPagamento: ['' as FormaPagamento | '', Validators.required],
     observacao: [''],
@@ -63,10 +63,10 @@ export class NovoAtendimentoComponent implements OnInit {
       },
     });
 
-    if (this.isDono()) {
-      this.usuarioService.listarBarbeiros().subscribe({
-        next: (barbeiros) => this.barbeiros.set(barbeiros),
-        error: () => this.erro.set('Não foi possível carregar a lista de barbeiros'),
+    if (this.isEmpregador()) {
+      this.usuarioService.listarFuncionarios().subscribe({
+        next: (funcionarios) => this.funcionarios.set(funcionarios),
+        error: () => this.erro.set('Não foi possível carregar a lista de funcionarios'),
       });
     }
   }
@@ -93,8 +93,8 @@ export class NovoAtendimentoComponent implements OnInit {
       return;
     }
 
-    if (this.isDono() && !this.form.value.barbeiroId) {
-      this.erro.set('Selecione o barbeiro');
+    if (this.isEmpregador() && !this.form.value.funcionarioId) {
+      this.erro.set('Selecione o funcionario');
       return;
     }
 
@@ -102,7 +102,7 @@ export class NovoAtendimentoComponent implements OnInit {
     this.enviando.set(true);
 
     this.atendimentoService.registrar({
-      barbeiroId: this.isDono() ? this.form.value.barbeiroId : null,
+      funcionarioId: this.isEmpregador() ? this.form.value.funcionarioId : null,
       nomeCliente: this.form.value.nomeCliente || undefined,
       formaPagamento: this.form.value.formaPagamento as FormaPagamento,
       servicoIds: idsServicos,

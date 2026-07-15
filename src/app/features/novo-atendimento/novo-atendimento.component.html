@@ -15,11 +15,11 @@
   @if (!carregando()) {
     <form [formGroup]="form" (ngSubmit)="salvar()">
 
-      @if (isDono()) {
-        <label for="barbeiro">Barbeiro</label>
-        <select id="barbeiro" formControlName="barbeiroId">
+      @if (isEmpregador()) {
+        <label for="funcionario">Funcionario</label>
+        <select id="funcionario" formControlName="funcionarioId">
           <option [ngValue]="null">Selecione...</option>
-          @for (b of barbeiros(); track b.id) {
+          @for (b of funcionarios(); track b.id) {
             <option [ngValue]="b.id">{{ b.nome }}</option>
           }
         </select>

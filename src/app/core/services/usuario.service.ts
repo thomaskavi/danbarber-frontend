@@ -15,7 +15,7 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
-  listarBarbeiros() {
-    return this.http.get<UsuarioResponse[]>(`${this.baseUrl}/barbeiros`);
+  listarFuncionarios() {
+    return this.http.get<UsuarioResponse[]>(`${this.baseUrl}/funcionarios`);
   }
 }

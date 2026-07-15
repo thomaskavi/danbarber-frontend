@@ -17,7 +17,7 @@ export class HistoricoComponent implements OnInit {
   private authService = inject(AuthService);
   private atendimentoService = inject(AtendimentoService);
 
-  readonly isDono = this.authService.isDono;
+  readonly isEmpregador = this.authService.isEmpregador;
 
   atendimentos = signal<AtendimentoResponse[]>([]);
   carregando = signal(false);
@@ -61,7 +61,7 @@ export class HistoricoComponent implements OnInit {
 
     const { inicio, fim } = dataParaDateTimeRange(this.filtroInicio(), this.filtroFim());
 
-    const busca = this.isDono()
+    const busca = this.isEmpregador()
       ? this.atendimentoService.listarPorPeriodo(inicio, fim)
       : this.atendimentoService.listarMeus(inicio, fim);
 

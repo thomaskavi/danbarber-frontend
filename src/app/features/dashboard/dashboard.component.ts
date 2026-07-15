@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   private fechamentoService = inject(FechamentoService);
 
   readonly nome = this.authService.nome;
-  readonly isDono = this.authService.isDono;
+  readonly isEmpregador = this.authService.isEmpregador;
 
   carregando = signal(true);
   erro = signal<string | null>(null);
@@ -31,18 +31,18 @@ export class DashboardComponent implements OnInit {
   // Lista do DIA — isso que aparece no dashboard agora
   atendimentosHoje = signal<AtendimentoResponse[]>([]);
 
-  // Usado pelo DONO
+  // Usado pelo EMPREGADOR
   fechamento = signal<FechamentoMensal | null>(null);
 
   ngOnInit() {
-    if (this.isDono()) {
-      this.carregarVisaoDono();
+    if (this.isEmpregador()) {
+      this.carregarVisaoEmpregador();
     } else {
-      this.carregarVisaoBarbeiro();
+      this.carregarVisaoFuncionario();
     }
   }
 
-  private carregarVisaoBarbeiro() {
+  private carregarVisaoFuncionario() {
     const mes = mesAtualComoDateTime();
     const hoje = hojeComoDateTime();
 
@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private carregarVisaoDono() {
+  private carregarVisaoEmpregador() {
     const { inicio: inicioData, fim: fimData } = mesAtualComoDate();
     const hoje = hojeComoDateTime();
 
@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit {
       error: () => this.erro.set('Não foi possível carregar o fechamento'),
     });
 
-    // Lista de atendimentos: só os de HOJE, de todos os barbeiros
+    // Lista de atendimentos: só os de HOJE, de todos os Funcionarios
     this.atendimentoService.listarPorPeriodo(hoje.inicio, hoje.fim).subscribe({
       next: (atendimentos) => {
         this.atendimentosHoje.set(

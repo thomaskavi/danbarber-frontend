@@ -41,7 +41,7 @@
   @if (jaFiltrou() && !carregando()) {
     <section class="resumo">
       <p>Total faturado: <strong>R$ {{ valorTotalPeriodo().toFixed(2) }}</strong></p>
-      @if (!isDono()) {
+      @if (!isEmpregador()) {
         <p>Sua comissão no período: <strong>R$ {{ comissaoTotalPeriodo().toFixed(2) }}</strong></p>
       }
     </section>
@@ -49,8 +49,8 @@
     <section class="lista">
       @for (atendimento of atendimentos(); track atendimento.id) {
         <div class="item">
-          @if (isDono()) {
-            <strong>{{ atendimento.barbeiroNome }}</strong>
+          @if (isEmpregador()) {
+            <strong>{{ atendimento.funcionarioNome }}</strong>
           }
           <span>{{ atendimento.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
           <span>{{ atendimento.nomesServicos.join(', ') }}</span>

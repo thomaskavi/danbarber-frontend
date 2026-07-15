@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-export interface ComissaoBarbeiro {
-  barbeiroId: number;
-  nomeBarbeiro: string;
+export interface ComissaoFuncionario {
+  FuncionarioId: number;
+  nomeFuncionario: string;
   totalComissao: number;
 }
 
@@ -13,7 +13,7 @@ export interface FechamentoMensal {
   fim: string;
   faturamentoTotal: number;
   faturamentoPorFormaPagamento: Record<string, number>;
-  comissoesPorBarbeiro: ComissaoBarbeiro[];
+  comissoesPorFuncionario: ComissaoFuncionario[];
   totalComissoes: number;
   totalDespesas: number;
   saldoLiquido: number;

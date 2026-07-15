@@ -21,7 +21,7 @@ export class AuthService {
   readonly nome = this.nomeSignal.asReadonly();
   readonly role = this.roleSignal.asReadonly();
   readonly estaLogado = computed(() => this.tokenSignal() !== null);
-  readonly isDono = computed(() => this.roleSignal() === 'DONO');
+  readonly isEmpregador = computed(() => this.roleSignal() === 'EMPREGADOR');
 
   constructor(private http: HttpClient, private router: Router) {}
 

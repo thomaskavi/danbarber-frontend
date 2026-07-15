@@ -8,11 +8,11 @@ export interface LoginRequest {
 export interface LoginResponse {
   token: string;
   nome: string;
-  role: 'DONO' | 'BARBEIRO';
+  role: 'EMPREGADOR' | 'FUNCIONARIO';
 }
 
 export interface AtendimentoRequest {
-  barbeiroId?: number | null; // só é usado quando o DONO está lançando em nome de outro barbeiro
+  funcionarioId?: number | null; // só é usado quando o DONO está lançando em nome de outro funcionario
   nomeCliente?: string;
   formaPagamento: FormaPagamento;
   servicoIds: number[];
@@ -21,7 +21,7 @@ export interface AtendimentoRequest {
 
 export interface AtendimentoResponse {
   id: number;
-  barbeiroNome: string;
+  funcionarioNome: string;
   nomeCliente: string | null;
   dataHora: string; // ISO string vindo do backend (LocalDateTime)
   formaPagamento: FormaPagamento;
