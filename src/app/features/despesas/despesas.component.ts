@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DespesaService } from '../../core/services/despesa.service';
-import { DespesaResponse } from '../../models/despesa.models';
+import { DespesaResponse } from '../../core/models/despesa.models';
 import { mesAtualComoDate, proximoMesComoDate, hojeComoDate, dataMenosDias, dataMaisDias } from '../../core/utils/date-utils';
 
 @Component({

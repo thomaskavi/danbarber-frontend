@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ServicoService } from '../../core/services/servico.service';
-import { ServicoResponse } from '../../models/models';
+import { ServicoResponse } from '../../core/models/models';
 
 @Component({
   selector: 'app-servicos',
