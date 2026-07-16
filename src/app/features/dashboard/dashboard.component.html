@@ -14,16 +14,17 @@
 
   @if (!carregando()) {
 
-    <!-- Visão do FUNCIONARIO -->
     @if (!isEmpregador()) {
       <section class="resumo">
         <h2>Comissão do mês</h2>
         <p class="valor-destaque">R$ {{ minhaComissaoTotal().toFixed(2) }}</p>
       </section>
+      
       <div class="acoes-topo">
         <a routerLink="/novo-atendimento" class="botao-secundario">+ Novo Atendimento</a>
         <a routerLink="/historico">Ver histórico completo</a>
       </div>
+
       <section class="lista">
         <h2>Atendimentos de hoje</h2>
         @for (atendimento of atendimentosHoje(); track atendimento.id) {
@@ -38,19 +39,93 @@
       </section>
     }
 
-    <!-- Visão do EMPREGADOR -->
     @if (isEmpregador()) {
       @if (fechamento(); as f) {
+        
         <section class="resumo">
-          <div class="acoes-topo">
-            <button class="botao-principal" routerLink="/despesas">Gerenciar Despesas</button>
-            <button class="botao-principal" routerLink="/servicos">Gerenciar Serviços</button>
-          </div>
           <h2>Fechamento do mês</h2>
-          <p>Faturamento total: <strong>R$ {{ f.faturamentoTotal.toFixed(2) }}</strong></p>
-          <p>Comissões: <strong>R$ {{ f.totalComissoes.toFixed(2) }}</strong></p>
-          <p>Despesas: <strong>R$ {{ f.totalDespesas.toFixed(2) }}</strong></p>
-          <p class="valor-destaque">Saldo líquido: R$ {{ f.saldoLiquido.toFixed(2) }}</p>
+
+          <p>Faturamento total:
+            <strong>R$ {{ f.faturamentoTotal.toFixed(2) }}</strong>
+          </p>
+
+          <p>Comissões:
+            <strong>R$ {{ f.totalComissoes.toFixed(2) }}</strong>
+          </p>
+
+          <p>Despesas:
+            <strong>R$ {{ f.totalDespesas.toFixed(2) }}</strong>
+          </p>
+
+          <p class="valor-destaque">
+            Saldo líquido:
+            R$ {{ f.saldoLiquido.toFixed(2) }}
+          </p>
+        </section>
+        
+        <section class="modulos">
+        
+          <h2>Operações</h2>
+        
+          <div class="grid-modulos">
+        
+            @if (temModulo('ATENDIMENTOS')) {
+            <a routerLink="/novo-atendimento" class="modulo">
+              <span class="icone">📋</span>
+              <span>Novo Atendimento</span>
+            </a>
+            }
+        
+            @if (temModulo('ESTOQUE_VENDAS')) {
+            <a routerLink="/nova-venda" class="modulo">
+              <span class="icone">🛒</span>
+              <span>Nova Venda</span>
+            </a>
+            }
+        
+          </div>
+        
+          <h2>Cadastros</h2>
+        
+          <div class="grid-modulos">
+        
+            @if (temModulo('ATENDIMENTOS')) {
+            <a routerLink="/servicos" class="modulo">
+              <span class="icone">🛠️</span>
+              <span>Serviços</span>
+            </a>
+            }
+        
+            @if (temModulo('ESTOQUE_VENDAS')) {
+            <a routerLink="/produtos" class="modulo">
+              <span class="icone">📦</span>
+              <span>Produtos</span>
+            </a>
+            }
+
+            <a routerLink="/funcionarios/novo" class="modulo">
+              <span class="icone">👤</span>
+              <span>Novo Funcionário</span>
+            </a>
+        
+            <a routerLink="/despesas" class="modulo">
+              <span class="icone">💰</span>
+              <span>Despesas</span>
+            </a>
+        
+          </div>
+        
+          <h2>Relatórios</h2>
+        
+          <div class="grid-modulos">
+        
+            <a routerLink="/historico" class="modulo">
+              <span class="icone">📊</span>
+              <span>Histórico</span>
+            </a>
+        
+          </div>
+        
         </section>
 
         <section class="lista">
@@ -63,11 +138,6 @@
           }
         </section>
       }
-
-      <div class="acoes-topo">
-        <a routerLink="/novo-atendimento" class="botao-secundario">+ Novo Atendimento</a>
-        <a routerLink="/historico">Ver histórico completo</a>
-      </div>
 
       <section class="lista">
         <h2>Atendimentos de hoje</h2>

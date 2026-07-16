@@ -18,7 +18,7 @@
       @if (isEmpregador()) {
         <label for="funcionario">Funcionario</label>
         <select id="funcionario" formControlName="funcionarioId">
-          <option [ngValue]="null">Selecione...</option>
+          <option [ngValue]="null">Registrar em meu nome</option>
           @for (b of funcionarios(); track b.id) {
             <option [ngValue]="b.id">{{ b.nome }}</option>
           }

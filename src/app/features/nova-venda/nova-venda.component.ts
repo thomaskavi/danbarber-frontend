@@ -2,6 +2,9 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProdutoService } from '../../core/services/produto.service';
 import { VendaService } from '../../core/services/venda.service';
 import { NotificacaoService } from '../../core/services/notificacao.service';
@@ -17,6 +20,7 @@ interface ItemCarrinho {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './nova-venda.component.html',
+  styleUrl: './nova-venda.component.css',
 })
 export class NovaVendaComponent implements OnInit {
 
@@ -25,7 +29,10 @@ export class NovaVendaComponent implements OnInit {
   private vendaService = inject(VendaService);
   private notificacao = inject(NotificacaoService);
 
-  produtos = signal<ProdutoResponse[]>([]);
+  termoBusca = signal('');
+  resultadosBusca = signal<ProdutoResponse[]>([]);
+  buscando = signal(false);
+
   carrinho = signal<ItemCarrinho[]>([]);
   enviando = signal(false);
 
@@ -36,28 +43,46 @@ export class NovaVendaComponent implements OnInit {
   form = this.fb.group({
     nomeCliente: [''],
     formaPagamento: ['' as FormaPagamento, Validators.required],
-    produtoSelecionadoId: [null as number | null],
-    quantidadeSelecionada: [1, [Validators.min(1)]],
   });
 
-  ngOnInit() {
-    this.produtoService.listarAtivos().subscribe({
-      next: (produtos) => this.produtos.set(produtos),
-      error: (err) => this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível carregar os produtos'),
+  private busca$ = new Subject<string>();
+
+  constructor() {
+    this.busca$
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe((termo) => this.buscarProdutos(termo));
+  }
+
+  ngOnInit() {}
+
+  onBuscaChange(valor: string) {
+    this.termoBusca.set(valor);
+
+    if (!valor.trim()) {
+      this.resultadosBusca.set([]);
+      return;
+    }
+
+    this.busca$.next(valor);
+  }
+
+  private buscarProdutos(termo: string) {
+    this.buscando.set(true);
+    this.produtoService.findAll(termo, 0, 8).subscribe({
+      next: (resultado) => {
+        this.resultadosBusca.set(resultado.content);
+        this.buscando.set(false);
+      },
+      error: (err) => {
+        this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível buscar produtos');
+        this.buscando.set(false);
+      },
     });
   }
 
-  adicionarAoCarrinho() {
-    const produtoId = this.form.value.produtoSelecionadoId;
-    const quantidade = this.form.value.quantidadeSelecionada ?? 1;
-
-    if (!produtoId || quantidade < 1) return;
-
-    const produto = this.produtos().find(p => p.id === produtoId);
-    if (!produto) return;
-
-    if (quantidade > produto.quantidadeEstoque) {
-      this.notificacao.erro(`Estoque insuficiente. Disponível: ${produto.quantidadeEstoque}`);
+  selecionarProduto(produto: ProdutoResponse) {
+    if (produto.quantidadeEstoque < 1) {
+      this.notificacao.erro(`"${produto.nome}" está sem estoque`);
       return;
     }
 
@@ -65,18 +90,37 @@ export class NovaVendaComponent implements OnInit {
     const existente = carrinhoAtual.find(i => i.produto.id === produto.id);
 
     if (existente) {
-      const novaQuantidade = existente.quantidade + quantidade;
-      if (novaQuantidade > produto.quantidadeEstoque) {
+      if (existente.quantidade + 1 > produto.quantidadeEstoque) {
         this.notificacao.erro(`Estoque insuficiente. Disponível: ${produto.quantidadeEstoque}`);
         return;
       }
-      existente.quantidade = novaQuantidade;
+      existente.quantidade += 1;
       this.carrinho.set([...carrinhoAtual]);
     } else {
-      this.carrinho.set([...carrinhoAtual, { produto, quantidade }]);
+      this.carrinho.set([...carrinhoAtual, { produto, quantidade: 1 }]);
     }
 
-    this.form.patchValue({ produtoSelecionadoId: null, quantidadeSelecionada: 1 });
+    // Limpa a busca depois de adicionar, pronto pra próxima
+    this.termoBusca.set('');
+    this.resultadosBusca.set([]);
+  }
+
+  aumentarQuantidade(item: ItemCarrinho) {
+    if (item.quantidade + 1 > item.produto.quantidadeEstoque) {
+      this.notificacao.erro(`Estoque insuficiente. Disponível: ${item.produto.quantidadeEstoque}`);
+      return;
+    }
+    item.quantidade += 1;
+    this.carrinho.set([...this.carrinho()]);
+  }
+
+  diminuirQuantidade(item: ItemCarrinho) {
+    if (item.quantidade <= 1) {
+      this.removerDoCarrinho(item.produto.id);
+      return;
+    }
+    item.quantidade -= 1;
+    this.carrinho.set([...this.carrinho()]);
   }
 
   removerDoCarrinho(produtoId: number) {
@@ -110,9 +154,7 @@ export class NovaVendaComponent implements OnInit {
         this.enviando.set(false);
         this.notificacao.sucesso('Venda registrada com sucesso!');
         this.carrinho.set([]);
-        this.form.reset({ formaPagamento: '' as FormaPagamento, produtoSelecionadoId: null, quantidadeSelecionada: 1 });
-        // Recarrega produtos pra refletir o estoque atualizado
-        this.produtoService.listarAtivos().subscribe(p => this.produtos.set(p));
+        this.form.reset({ nomeCliente: '', formaPagamento: '' as FormaPagamento });
       },
       error: (err) => {
         this.enviando.set(false);

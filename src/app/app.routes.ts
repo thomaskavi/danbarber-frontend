@@ -54,9 +54,47 @@ export const routes: Routes = [
     import('./features/produtos/produtos.component').then(m => m.ProdutosComponent),
 },
 {
+  path: 'produtos/novo',
+  canActivate: [authGuard, empregador, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/produtos/novo-produto/novo-produto.component').then(m => m.NovoProdutoComponent),
+},
+{
+  path: 'produtos/:id',
+  canActivate: [authGuard, empregador, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/produtos/produto-detalhe/produto-detalhe.component').then(m => m.ProdutoDetalheComponent),
+},
+{
+  path: 'produtos/:id/editar',
+  canActivate: [authGuard, empregador, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/produtos/editar-produto/editar-produto.component').then(m => m.EditarProdutoComponent),
+},
+{
+  path: 'produtos/:id/ajuste-estoque',
+  canActivate: [authGuard, empregador, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/produtos/ajuste-estoque/ajuste-estoque.component').then(m => m.AjusteEstoqueComponent),
+},
+{
+  path: 'produtos/:id/movimentacoes',
+  canActivate: [authGuard, empregador, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/produtos/movimentacoes-estoque/movimentacoes-estoque.component').then(m => m.MovimentacoesEstoqueComponent),
+},
+
+{
   path: 'nova-venda',
   canActivate: [authGuard, moduloGuard('ESTOQUE_VENDAS')],
   loadComponent: () =>
     import('./features/nova-venda/nova-venda.component').then(m => m.NovaVendaComponent),
+},
+
+{
+  path: 'funcionarios/novo',
+  canActivate: [authGuard, empregador],
+  loadComponent: () =>
+    import('./features/novo-funcionario/novo-funcionario.component').then(m => m.NovoFuncionarioComponent),
 },
 ];

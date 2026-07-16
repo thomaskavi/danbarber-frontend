@@ -12,6 +12,7 @@ import { mesAtualComoDateTime, mesAtualComoDate, hojeComoDateTime } from '../../
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
 
@@ -21,6 +22,7 @@ export class DashboardComponent implements OnInit {
 
   readonly nome = this.authService.nome;
   readonly isEmpregador = this.authService.isEmpregador;
+  readonly temModulo = this.authService.temModulo.bind(this.authService);
 
   carregando = signal(true);
   erro = signal<string | null>(null);

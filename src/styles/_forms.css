@@ -49,3 +49,14 @@ textarea{
     min-height:100px;
 
 }
+
+.checkbox-linha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.checkbox-linha input {
+  width: auto;
+}

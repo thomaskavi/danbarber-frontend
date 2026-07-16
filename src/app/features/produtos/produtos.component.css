@@ -1,0 +1,81 @@
+.produtos-lista {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 24px;
+}
+
+.produtos-lista header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.busca {
+  margin-bottom: 20px;
+}
+
+.busca input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.item-produto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: var(--surface);
+  color: var(--text);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.item-produto:hover {
+  background: #f5f6f8;
+}
+
+.item-produto:last-child {
+  border-bottom: none;
+}
+
+.info-produto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.estoque-baixo {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.badge-alerta {
+  background: var(--danger);
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-left: 6px;
+}
+
+.seta {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}

@@ -4,6 +4,23 @@
     <a routerLink="/dashboard">Voltar</a>
   </header>
 
+  @if (temAtendimentos && temVendas) {
+    <div class="abas">
+      <button
+        type="button"
+        [class.aba-ativa]="aba() === 'ATENDIMENTOS'"
+        (click)="trocarAba('ATENDIMENTOS')">
+        Atendimentos
+      </button>
+      <button
+        type="button"
+        [class.aba-ativa]="aba() === 'VENDAS'"
+        (click)="trocarAba('VENDAS')">
+        Vendas
+      </button>
+    </div>
+  }
+
   <section class="filtro">
     <div class="atalhos">
       <button type="button" (click)="aplicarAtalho(7)">Últimos 7 dias</button>
@@ -39,27 +56,47 @@
   }
 
   @if (jaFiltrou() && !carregando()) {
+
     <section class="resumo">
       <p>Total faturado: <strong>R$ {{ valorTotalPeriodo().toFixed(2) }}</strong></p>
-      @if (!isEmpregador()) {
+      @if (aba() === 'ATENDIMENTOS' && !isEmpregador()) {
         <p>Sua comissão no período: <strong>R$ {{ comissaoTotalPeriodo().toFixed(2) }}</strong></p>
       }
     </section>
 
-    <section class="lista">
-      @for (atendimento of atendimentos(); track atendimento.id) {
-        <div class="item">
-          @if (isEmpregador()) {
-            <strong>{{ atendimento.funcionarioNome }}</strong>
-          }
-          <span>{{ atendimento.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
-          <span>{{ atendimento.nomesServicos.join(', ') }}</span>
-          <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
-          <span> {{atendimento.observacao || 'Sem observação'}}</span>
-        </div>
-      } @empty {
-        <p>Nenhum atendimento encontrado nesse período.</p>
-      }
-    </section>
+    @if (aba() === 'ATENDIMENTOS') {
+      <section class="lista">
+        @for (atendimento of atendimentos(); track atendimento.id) {
+          <div class="item">
+            @if (isEmpregador()) {
+              <strong>{{ atendimento.funcionarioNome }}</strong>
+            }
+            <span>{{ atendimento.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
+            <span>{{ atendimento.nomesServicos.join(', ') }}</span>
+            <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
+            <span>{{ atendimento.observacao || 'Sem observação' }}</span>
+          </div>
+        } @empty {
+          <p>Nenhum atendimento encontrado nesse período.</p>
+        }
+      </section>
+    }
+
+    @if (aba() === 'VENDAS') {
+      <section class="lista">
+        @for (venda of vendas(); track venda.id) {
+          <div class="item">
+            @if (isEmpregador()) {
+              <strong>{{ venda.nomeVendedor }}</strong>
+            }
+            <span>{{ venda.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ venda.nomeCliente || 'Cliente não informado' }}</span>
+            <span>{{ venda.itens.map(i => i.nomeProduto + ' (' + i.quantidade + 'x)').join(', ') }}</span>
+            <span>R$ {{ venda.valorTotal.toFixed(2) }} · {{ venda.formaPagamento }}</span>
+          </div>
+        } @empty {
+          <p>Nenhuma venda encontrada nesse período.</p>
+        }
+      </section>
+    }
   }
 </div>

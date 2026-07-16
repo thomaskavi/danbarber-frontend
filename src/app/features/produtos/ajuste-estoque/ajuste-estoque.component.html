@@ -1,0 +1,41 @@
+<div class="servicos">
+  <header>
+    <h1>Ajustar estoque</h1>
+    @if (produto(); as p) {
+      <a [routerLink]="['/produtos', p.id]">Cancelar</a>
+    }
+  </header>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  @if (produto(); as p) {
+    <section class="card">
+      <p><strong>Produto:</strong> {{ p.nome }}</p>
+      <p><strong>Estoque atual:</strong> {{ p.quantidadeEstoque }}</p>
+    </section>
+
+    <section class="form-servico">
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <label for="tipo">Tipo de movimentação</label>
+        <select id="tipo" formControlName="tipo">
+          <option value="ENTRADA">Entrada</option>
+          <option value="SAIDA">Saída</option>
+        </select>
+
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" type="number" formControlName="quantidade" min="1" />
+
+        <label for="observacao">Observação (opcional)</label>
+        <textarea id="observacao" formControlName="observacao" placeholder="Ex: Reposição de estoque, perda por validade..."></textarea>
+
+        <div class="acoes-form">
+          <button type="submit" [disabled]="form.invalid || enviando()">
+            {{ enviando() ? 'Salvando...' : 'Confirmar ajuste' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+</div>

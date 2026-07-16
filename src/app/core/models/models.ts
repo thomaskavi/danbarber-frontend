@@ -92,3 +92,11 @@ export interface VendaResponse {
   itens: ItemVendaResponse[];
   valorTotal: number;
 }
+
+export interface CriarFuncionarioRequest {
+  nome: string;
+  login: string;
+  senha: string;
+  temComissao: boolean;
+  percentualComissao: number | null;
+}

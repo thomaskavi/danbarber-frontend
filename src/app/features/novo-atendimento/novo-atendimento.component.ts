@@ -93,11 +93,6 @@ export class NovoAtendimentoComponent implements OnInit {
       return;
     }
 
-    if (this.isEmpregador() && !this.form.value.funcionarioId) {
-      this.erro.set('Selecione o funcionario');
-      return;
-    }
-
     this.erro.set(null);
     this.enviando.set(true);
 

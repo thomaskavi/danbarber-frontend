@@ -1,54 +1,60 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProdutoService } from '../../core/services/produto.service';
 import { NotificacaoService } from '../../core/services/notificacao.service';
-import { ProdutoResponse, TipoAjusteEstoque } from '../../core/models/models';
+import { ProdutoResponse } from '../../core/models/models';
+
+const ESTOQUE_BAIXO_LIMITE = 5;
 
 @Component({
   selector: 'app-produtos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './produtos.component.html',
-
+  styleUrl: './produtos.component.css',
 })
 export class ProdutosComponent implements OnInit {
 
-  private fb = inject(FormBuilder);
   private produtoService = inject(ProdutoService);
   private notificacao = inject(NotificacaoService);
+  private router = inject(Router);
 
   produtos = signal<ProdutoResponse[]>([]);
-  produtosInativos = signal<ProdutoResponse[]>([]);
-  mostrarInativos = signal(false);
-
   carregando = signal(true);
-  enviando = signal(false);
+  termoBusca = signal('');
+  paginaAtual = signal(0);
+  totalPaginas = signal(0);
+  readonly tamanhoPagina = 10;
 
-  produtoEmEdicao = signal<ProdutoResponse | null>(null);
-  produtoAjustandoEstoque = signal<ProdutoResponse | null>(null);
+  private busca$ = new Subject<string>();
 
-  form = this.fb.group({
-    nome: ['', Validators.required],
-    preco: [null as number | null, [Validators.required, Validators.min(0.01)]],
-    quantidadeEstoque: [0, [Validators.required, Validators.min(0)]],
-  });
-
-  formEstoque = this.fb.group({
-    tipo: ['ENTRADA' as TipoAjusteEstoque, Validators.required],
-    quantidade: [null as number | null, [Validators.required, Validators.min(1)]],
-  });
-
-  ngOnInit() {
-    this.carregar();
+  constructor() {
+    // Debounce de 300ms: só busca depois que o usuário parar de digitar
+    this.busca$
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe((termo) => this.buscar(termo, 0));
   }
 
-  carregar() {
+  ngOnInit() {
+    this.buscar('', 0);
+  }
+
+  onBuscaChange(valor: string) {
+    this.termoBusca.set(valor);
+    this.busca$.next(valor);
+  }
+
+  private buscar(nome: string, pagina: number) {
     this.carregando.set(true);
-    this.produtoService.listarAtivos().subscribe({
-      next: (produtos) => {
-        this.produtos.set(produtos);
+    this.produtoService.findAll(nome, pagina, this.tamanhoPagina).subscribe({
+      next: (resultado) => {
+        this.produtos.set(resultado.content);
+        this.totalPaginas.set(resultado.totalPages);
+        this.paginaAtual.set(resultado.number);
         this.carregando.set(false);
       },
       error: (err) => {
@@ -58,116 +64,23 @@ export class ProdutosComponent implements OnInit {
     });
   }
 
-  alternarInativos() {
-    const abrindo = !this.mostrarInativos();
-    this.mostrarInativos.set(abrindo);
-
-    if (abrindo) {
-      this.produtoService.listarInativos().subscribe({
-        next: (produtos) => this.produtosInativos.set(produtos),
-        error: (err) => this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível carregar os produtos desativados'),
-      });
+  proximaPagina() {
+    if (this.paginaAtual() + 1 < this.totalPaginas()) {
+      this.buscar(this.termoBusca(), this.paginaAtual() + 1);
     }
   }
 
-  reativar(produto: ProdutoResponse) {
-    this.produtoService.reativar(produto.id).subscribe({
-      next: () => {
-        this.produtosInativos.set(this.produtosInativos().filter(p => p.id !== produto.id));
-        this.notificacao.sucesso('Produto reativado');
-        this.carregar();
-      },
-      error: (err) => this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível reativar o produto'),
-    });
-  }
-
-  editar(produto: ProdutoResponse) {
-    this.produtoEmEdicao.set(produto);
-    this.form.patchValue({
-      nome: produto.nome,
-      preco: produto.preco,
-      quantidadeEstoque: produto.quantidadeEstoque,
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  cancelarEdicao() {
-    this.produtoEmEdicao.set(null);
-    this.form.reset({ nome: '', preco: null, quantidadeEstoque: 0 });
-  }
-
-  salvar() {
-    if (this.form.invalid) {
-      return;
+  paginaAnterior() {
+    if (this.paginaAtual() > 0) {
+      this.buscar(this.termoBusca(), this.paginaAtual() - 1);
     }
-
-    this.enviando.set(true);
-    const emEdicao = this.produtoEmEdicao();
-
-    // Na edição, o back não altera estoque por aqui (só nome/preço) —
-    // ajuste de estoque é sempre via ajustarEstoque, separado
-    const dto = {
-      nome: this.form.value.nome!,
-      preco: this.form.value.preco!,
-      quantidadeEstoque: this.form.value.quantidadeEstoque!,
-    };
-
-    const operacao = emEdicao
-      ? this.produtoService.atualizar(emEdicao.id, dto)
-      : this.produtoService.registrar(dto);
-
-    operacao.subscribe({
-      next: () => {
-        this.enviando.set(false);
-        this.notificacao.sucesso(emEdicao ? 'Produto atualizado' : 'Produto cadastrado');
-        this.cancelarEdicao();
-        this.carregar();
-      },
-      error: (err) => {
-        this.enviando.set(false);
-        this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível salvar o produto');
-      },
-    });
   }
 
-  desativar(produto: ProdutoResponse) {
-    const confirmar = confirm(`Desativar "${produto.nome}"?`);
-    if (!confirmar) return;
-
-    this.produtoService.desativar(produto.id).subscribe({
-      next: () => {
-        this.notificacao.sucesso('Produto desativado');
-        this.carregar();
-      },
-      error: (err) => this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível desativar o produto'),
-    });
+  estoqueBaixo(produto: ProdutoResponse): boolean {
+    return produto.quantidadeEstoque <= ESTOQUE_BAIXO_LIMITE;
   }
 
-  abrirAjusteEstoque(produto: ProdutoResponse) {
-    this.produtoAjustandoEstoque.set(produto);
-    this.formEstoque.reset({ tipo: 'ENTRADA', quantidade: null });
-  }
-
-  cancelarAjusteEstoque() {
-    this.produtoAjustandoEstoque.set(null);
-  }
-
-  confirmarAjusteEstoque() {
-    const produto = this.produtoAjustandoEstoque();
-    if (!produto || this.formEstoque.invalid) return;
-
-    const dto = {
-      tipo: this.formEstoque.value.tipo!,
-      quantidade: this.formEstoque.value.quantidade!,
-    };
-
-    this.produtoService.ajustarEstoque(produto.id, dto).subscribe({
-      next: () => {
-        this.notificacao.sucesso('Estoque ajustado');
-        this.cancelarAjusteEstoque();
-        this.carregar();
-      },
-      error: (err) => this.notificacao.erro(err?.error?.mensagem ?? 'Não foi possível ajustar o estoque'),
-    });
+  abrirDetalhe(produto: ProdutoResponse) {
+    this.router.navigate(['/produtos', produto.id]);
   }
 }

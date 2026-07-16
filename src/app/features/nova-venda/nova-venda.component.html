@@ -8,34 +8,55 @@
   <section class="form-servico">
     <h2>Adicionar produto</h2>
 
-    <form [formGroup]="form">
-      <label for="produtoSelecionadoId">Produto</label>
-      <select id="produtoSelecionadoId" formControlName="produtoSelecionadoId">
-        <option [ngValue]="null" disabled>Selecione um produto</option>
-        @for (produto of produtos(); track produto.id) {
-          <option [ngValue]="produto.id">{{ produto.nome }} — R$ {{ produto.preco.toFixed(2) }} (estoque: {{ produto.quantidadeEstoque }})</option>
-        }
-      </select>
+    <div class="busca-produto">
+      <input
+        type="text"
+        placeholder="Buscar produto por nome..."
+        [value]="termoBusca()"
+        (input)="onBuscaChange($any($event.target).value)"
+      />
 
-      <label for="quantidadeSelecionada">Quantidade</label>
-      <input id="quantidadeSelecionada" type="number" formControlName="quantidadeSelecionada" min="1" />
+      @if (termoBusca() && resultadosBusca().length > 0) {
+        <div class="resultados-busca">
+          @for (produto of resultadosBusca(); track produto.id) {
+            <button type="button" class="resultado-item" (click)="selecionarProduto(produto)">
+              <span>{{ produto.nome }}</span>
+              <span class="resultado-info">
+                R$ {{ produto.preco.toFixed(2) }} · estoque: {{ produto.quantidadeEstoque }}
+              </span>
+            </button>
+          }
+        </div>
+      }
 
-      <button type="button" (click)="adicionarAoCarrinho()">Adicionar ao carrinho</button>
-    </form>
+      @if (termoBusca() && !buscando() && resultadosBusca().length === 0) {
+        <p class="sem-resultado">Nenhum produto encontrado.</p>
+      }
+    </div>
   </section>
 
   <section class="lista">
     <h2>Carrinho</h2>
 
     @for (item of carrinho(); track item.produto.id) {
-      <div class="item">
-        <strong>{{ item.produto.nome }}</strong>
-        <span>{{ item.quantidade }}x R$ {{ item.produto.preco.toFixed(2) }}</span>
-        <span>R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
-        <button type="button" (click)="removerDoCarrinho(item.produto.id)">Remover</button>
+      <div class="item-carrinho">
+        <div class="info-item">
+          <strong>{{ item.produto.nome }}</strong>
+          <span>R$ {{ item.produto.preco.toFixed(2) }} cada</span>
+        </div>
+
+        <div class="controles-quantidade">
+          <button type="button" (click)="diminuirQuantidade(item)">−</button>
+          <span>{{ item.quantidade }}</span>
+          <button type="button" (click)="aumentarQuantidade(item)">+</button>
+        </div>
+
+        <span class="subtotal-item">R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
+
+        <button type="button" class="remover-item" (click)="removerDoCarrinho(item.produto.id)">🗑️</button>
       </div>
     } @empty {
-      <p>Carrinho vazio.</p>
+      <p>Carrinho vazio. Busque um produto acima para começar.</p>
     }
 
     @if (carrinho().length > 0) {

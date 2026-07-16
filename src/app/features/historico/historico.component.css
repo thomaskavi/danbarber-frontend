@@ -1,0 +1,18 @@
+.abas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.abas button {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.abas button.aba-ativa {
+  background: var(--primary);
+  color: white;
+}

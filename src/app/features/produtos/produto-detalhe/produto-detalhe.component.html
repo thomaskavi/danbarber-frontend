@@ -1,0 +1,40 @@
+<div class="servicos">
+  <header>
+    <h1>{{ produto()?.nome || 'Produto' }}</h1>
+    <a routerLink="/produtos">Voltar</a>
+  </header>
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  @if (produto(); as p) {
+    <section class="card">
+      <p><strong>Nome:</strong> {{ p.nome }}</p>
+      <p><strong>Preço:</strong> R$ {{ p.preco.toFixed(2) }}</p>
+      <p><strong>Estoque atual:</strong> {{ p.quantidadeEstoque }}</p>
+    </section>
+
+    <section class="grid-modulos">
+      <a [routerLink]="['/produtos', p.id, 'editar']" class="modulo">
+        <span class="icone">✏️</span>
+        <span>Editar produto</span>
+      </a>
+
+      <a [routerLink]="['/produtos', p.id, 'ajuste-estoque']" class="modulo">
+        <span class="icone">📦</span>
+        <span>Ajustar estoque</span>
+      </a>
+
+      <a [routerLink]="['/produtos', p.id, 'movimentacoes']" class="modulo">
+        <span class="icone">📊</span>
+        <span>Movimentações</span>
+      </a>
+
+      <button type="button" class="modulo" (click)="desativar()">
+        <span class="icone">🚫</span>
+        <span>Desativar produto</span>
+      </button>
+    </section>
+  }
+</div>
