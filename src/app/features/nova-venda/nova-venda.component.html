@@ -1,0 +1,68 @@
+<div class="novo-atendimento">
+
+  <header>
+    <h1>Nova venda</h1>
+    <a routerLink="/dashboard">Voltar</a>
+  </header>
+
+  <section class="form-servico">
+    <h2>Adicionar produto</h2>
+
+    <form [formGroup]="form">
+      <label for="produtoSelecionadoId">Produto</label>
+      <select id="produtoSelecionadoId" formControlName="produtoSelecionadoId">
+        <option [ngValue]="null" disabled>Selecione um produto</option>
+        @for (produto of produtos(); track produto.id) {
+          <option [ngValue]="produto.id">{{ produto.nome }} — R$ {{ produto.preco.toFixed(2) }} (estoque: {{ produto.quantidadeEstoque }})</option>
+        }
+      </select>
+
+      <label for="quantidadeSelecionada">Quantidade</label>
+      <input id="quantidadeSelecionada" type="number" formControlName="quantidadeSelecionada" min="1" />
+
+      <button type="button" (click)="adicionarAoCarrinho()">Adicionar ao carrinho</button>
+    </form>
+  </section>
+
+  <section class="lista">
+    <h2>Carrinho</h2>
+
+    @for (item of carrinho(); track item.produto.id) {
+      <div class="item">
+        <strong>{{ item.produto.nome }}</strong>
+        <span>{{ item.quantidade }}x R$ {{ item.produto.preco.toFixed(2) }}</span>
+        <span>R$ {{ (item.produto.preco * item.quantidade).toFixed(2) }}</span>
+        <button type="button" (click)="removerDoCarrinho(item.produto.id)">Remover</button>
+      </div>
+    } @empty {
+      <p>Carrinho vazio.</p>
+    }
+
+    @if (carrinho().length > 0) {
+      <p class="valor-destaque">Total: R$ {{ valorTotal().toFixed(2) }}</p>
+    }
+  </section>
+
+  <section class="form-servico">
+    <h2>Finalizar venda</h2>
+
+    <form [formGroup]="form" (ngSubmit)="finalizarVenda()">
+      <label for="nomeCliente">Cliente (opcional)</label>
+      <input id="nomeCliente" type="text" formControlName="nomeCliente" />
+
+      <label for="formaPagamento">Forma de pagamento</label>
+      <select id="formaPagamento" formControlName="formaPagamento">
+        <option value="" disabled>Selecione</option>
+        <option value="PIX">Pix</option>
+        <option value="CARTAO_CREDITO">Cartão de crédito</option>
+        <option value="CARTAO_DEBITO">Cartão de débito</option>
+        <option value="DINHEIRO">Dinheiro</option>
+      </select>
+
+      <button type="submit" [disabled]="enviando()">
+        {{ enviando() ? 'Registrando...' : 'Finalizar venda' }}
+      </button>
+    </form>
+  </section>
+
+</div>

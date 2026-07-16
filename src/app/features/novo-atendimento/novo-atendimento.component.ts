@@ -6,7 +6,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { AtendimentoService } from '../../core/services/atendimento.service';
 import { ServicoService } from '../../core/services/servico.service';
 import { UsuarioService, UsuarioResponse } from '../../core/services/usuario.service';
-import { ServicoResponse, FormaPagamento } from '../../core/models/model';
+import { ServicoResponse, FormaPagamento } from '../../core/models/models';
 import { RouterLink } from '@angular/router';
 
 @Component({

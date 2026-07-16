@@ -3,18 +3,21 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificacaoService } from '../../core/services/notificacao.service';
 
 @Component({
   selector: 'app-registrar',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './registrar.component.html',
+  styleUrl: './registrar.component.css',
 })
 export class RegistrarComponent {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private notificacao = inject(NotificacaoService);
 
   erro: string | null = null;
   carregando = false;
@@ -44,14 +47,12 @@ export class RegistrarComponent {
     }).subscribe({
       next: () => {
         this.carregando = false;
-        // Depois de criar a conta, manda direto pro login
-        this.router.navigate(['/login'], {
-          queryParams: { registrado: 'true' }
-        });
+        this.notificacao.sucesso('Conta criada com sucesso! Faça login para continuar.');
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         this.carregando = false;
-        this.erro = err?.error?.mensagem ?? 'Erro ao criar conta. Tente novamente.';
+        this.notificacao.erro(err?.error?.mensagem ?? 'Erro ao criar conta. Tente novamente.');
       },
     });
   }

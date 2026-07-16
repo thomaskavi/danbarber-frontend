@@ -1,0 +1,103 @@
+<div class="servicos">
+
+  <header>
+    <h1>Produtos</h1>
+    <a routerLink="/dashboard">Voltar</a>
+  </header>
+
+  <section class="form-servico">
+    <h2>{{ produtoEmEdicao() ? 'Editar produto' : 'Novo produto' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      <label for="nome">Nome</label>
+      <input id="nome" type="text" formControlName="nome" placeholder="Ex: Pomada, Shampoo..." />
+
+      <label for="preco">Preço</label>
+      <input id="preco" type="number" step="0.01" formControlName="preco" />
+
+      <label for="quantidadeEstoque">Quantidade inicial em estoque</label>
+      <input id="quantidadeEstoque" type="number" formControlName="quantidadeEstoque" [attr.disabled]="produtoEmEdicao() ? true : null" />
+
+      <div class="acoes-form">
+        <button type="submit" [disabled]="form.invalid || enviando()">
+          {{ enviando() ? 'Salvando...' : produtoEmEdicao() ? 'Salvar alterações' : 'Adicionar produto' }}
+        </button>
+
+        @if (produtoEmEdicao()) {
+          <button type="button" (click)="cancelarEdicao()">Cancelar</button>
+        }
+      </div>
+    </form>
+  </section>
+
+  @if (produtoAjustandoEstoque(); as produto) {
+    <section class="form-servico">
+      <h2>Ajustar estoque: {{ produto.nome }}</h2>
+      <p>Estoque atual: <strong>{{ produto.quantidadeEstoque }}</strong></p>
+
+      <form [formGroup]="formEstoque" (ngSubmit)="confirmarAjusteEstoque()">
+        <label for="tipo">Tipo</label>
+        <select id="tipo" formControlName="tipo">
+          <option value="ENTRADA">Entrada</option>
+          <option value="SAIDA">Saída</option>
+        </select>
+
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" type="number" formControlName="quantidade" />
+
+        <div class="acoes-form">
+          <button type="submit" [disabled]="formEstoque.invalid">Confirmar</button>
+          <button type="button" (click)="cancelarAjusteEstoque()">Cancelar</button>
+        </div>
+      </form>
+    </section>
+  }
+
+  @if (carregando()) {
+    <p>Carregando...</p>
+  }
+
+  <section class="lista">
+    <h2>Produtos ativos</h2>
+
+    @for (produto of produtos(); track produto.id) {
+      <div class="item">
+        <strong>{{ produto.nome }}</strong>
+        <span>R$ {{ produto.preco.toFixed(2) }}</span>
+        <span>Estoque: {{ produto.quantidadeEstoque }}</span>
+
+        <div class="acoes-item">
+          <button type="button" (click)="editar(produto)">✏️ Editar</button>
+          <button type="button" (click)="abrirAjusteEstoque(produto)">📦 Estoque</button>
+          <button type="button" (click)="desativar(produto)">🚫 Desativar</button>
+        </div>
+      </div>
+    } @empty {
+      <p>Nenhum produto cadastrado ainda.</p>
+    }
+  </section>
+
+  <section class="lista">
+    <button type="button" (click)="alternarInativos()">
+      {{ mostrarInativos() ? 'Ocultar desativados' : 'Ver produtos desativados' }}
+    </button>
+
+    @if (mostrarInativos()) {
+      <h2>Produtos desativados</h2>
+
+      @for (produto of produtosInativos(); track produto.id) {
+        <div class="item">
+          <strong>{{ produto.nome }}</strong>
+          <span>R$ {{ produto.preco.toFixed(2) }}</span>
+
+          <div class="acoes-item">
+            <button type="button" (click)="reativar(produto)">♻️ Reativar</button>
+          </div>
+        </div>
+      } @empty {
+        <p>Nenhum produto desativado no momento.</p>
+      }
+    }
+  </section>
+
+</div>

@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { AtendimentoService } from '../../core/services/atendimento.service';
 import { FechamentoService, FechamentoMensal } from '../../core/services/fechamento.service';
-import { AtendimentoResponse } from '../../core/models/model';
+import { AtendimentoResponse } from '../../core/models/models';
 import { mesAtualComoDateTime, mesAtualComoDate, hojeComoDateTime } from '../../core/utils/date-utils';
 
 @Component({

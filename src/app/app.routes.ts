@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { empregador } from './core/guards/empregador.guard';
+import { moduloGuard } from './core/guards/modulo.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -45,4 +46,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/registrar/registrar.component').then(m => m.RegistrarComponent),
   },
+
+  {
+  path: 'produtos',
+  canActivate: [authGuard, empregador, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/produtos/produtos.component').then(m => m.ProdutosComponent),
+},
+{
+  path: 'nova-venda',
+  canActivate: [authGuard, moduloGuard('ESTOQUE_VENDAS')],
+  loadComponent: () =>
+    import('./features/nova-venda/nova-venda.component').then(m => m.NovaVendaComponent),
+},
 ];
