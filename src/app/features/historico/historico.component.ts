@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { AtendimentoService } from '../../core/services/atendimento.service';
-import { AtendimentoResponse } from '../../core/models/models';
+import { AtendimentoResponse } from '../../core/models/model';
 import { dataParaDateTimeRange, hojeComoDate, dataMenosDias } from '../../core/utils/date-utils';
 
 @Component({
