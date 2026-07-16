@@ -1,0 +1,35 @@
+<div class="login-container">
+  <h1>Criar conta</h1>
+
+  <form [formGroup]="form" (ngSubmit)="registrar()">
+    <label for="nomeEmpresa">Nome da empresa</label>
+    <input id="nomeEmpresa" type="text" formControlName="nomeEmpresa" />
+
+    <label for="ramo">Ramo</label>
+    <select id="ramo" formControlName="ramo">
+      <option value="" disabled selected>Selecione o ramo</option>
+      <option value="BARBEARIA">Barbearia</option>
+      <option value="VENDAS">Vendas</option>
+      <option value="OUTRO">Outro</option>
+    </select>
+
+    <label for="nomeDono">Seu nome</label>
+    <input id="nomeDono" type="text" formControlName="nomeDono" />
+
+    <label for="login">Login</label>
+    <input id="login" type="text" formControlName="login" autocomplete="username" />
+
+    <label for="senha">Senha</label>
+    <input id="senha" type="password" formControlName="senha" autocomplete="new-password" />
+
+    @if (erro) {
+      <p class="erro">{{ erro }}</p>
+    }
+
+    <button type="submit" [disabled]="form.invalid || carregando">
+      {{ carregando ? 'Criando...' : 'Criar conta' }}
+    </button>
+  </form>
+
+  <a routerLink="/login">Já tem uma conta? Entrar</a>
+</div>

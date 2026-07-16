@@ -7,6 +7,15 @@
     font-weight:600;
 
 }
+.sucesso{
+
+    color:var(--success);
+
+    margin-top:10px;
+
+    font-weight:600;
+
+}
 
 .atalhos{
 
@@ -69,5 +78,4 @@ header{
     font-size:1.6rem;
 
 }
-
 }

@@ -1,6 +1,10 @@
 <div class="login-container">
   <h1>DanBarber</h1>
 
+  @if (sucesso) {
+    <p class="sucesso">{{ sucesso }}</p>
+  }
+
   <form [formGroup]="form" (ngSubmit)="entrar()">
     <label for="login">Login</label>
     <input id="login" type="text" formControlName="login" autocomplete="username" />
@@ -16,4 +20,5 @@
       {{ carregando ? 'Entrando...' : 'Entrar' }}
     </button>
   </form>
+  <a routerLink="/criar-conta">Não tem uma conta? Crie uma agora!</a>
 </div>

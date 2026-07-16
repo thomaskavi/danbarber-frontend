@@ -39,4 +39,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/servicos/servicos.component').then(m => m.ServicosComponent),
   },
+
+  { 
+    path: 'criar-conta',
+    loadComponent: () =>
+      import('./features/registrar/registrar.component').then(m => m.RegistrarComponent),
+  },
 ];

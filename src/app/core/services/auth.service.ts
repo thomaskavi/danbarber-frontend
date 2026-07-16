@@ -3,6 +3,7 @@ import { Injectable, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LoginRequest, LoginResponse } from '../../models/models';
+import { Observable } from 'rxjs';
 
 const CHAVE_TOKEN = 'danbarber_token';
 const CHAVE_NOME = 'danbarber_nome';
@@ -10,7 +11,7 @@ const CHAVE_ROLE = 'danbarber_role';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
+  
   
   // Signals: qualquer componente que ler esses valores atualiza sozinho quando eles mudam
   private tokenSignal = signal<string | null>(localStorage.getItem(CHAVE_TOKEN));
@@ -57,5 +58,15 @@ export class AuthService {
 
   obterToken(): string | null {
     return this.tokenSignal();
+  }
+
+  registrar(dados: {
+    nomeEmpresa: string;
+    ramo: string;
+    nomeDono: string;
+    login: string;
+    senha: string;
+  }): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/auth/register`, dados);
   }
 }
