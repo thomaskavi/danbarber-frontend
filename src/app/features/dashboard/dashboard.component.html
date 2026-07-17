@@ -44,25 +44,45 @@
         
         <section class="resumo">
           <h2>Fechamento do mês</h2>
-
-          <p>Faturamento total:
+        
+          @if (temModulo('ATENDIMENTOS')) {
+          <p>
+            Faturamento com atendimentos:
+            <strong>R$ {{ f.faturamentoAtendimentos.toFixed(2) }}</strong>
+          </p>
+          }
+        
+          @if (temModulo('ESTOQUE_VENDAS')) {
+          <p>
+            Faturamento com vendas:
+            <strong>R$ {{ f.faturamentoVendas.toFixed(2) }}</strong>
+          </p>
+          }
+        
+          <hr>
+        
+          <p>
+            Faturamento total:
             <strong>R$ {{ f.faturamentoTotal.toFixed(2) }}</strong>
           </p>
-
-          <p>Comissões:
+        
+          @if (temModulo('ATENDIMENTOS')) {
+          <p>
+            Comissões:
             <strong>R$ {{ f.totalComissoes.toFixed(2) }}</strong>
           </p>
-
-          <p>Despesas:
+          }
+        
+          <p>
+            Despesas:
             <strong>R$ {{ f.totalDespesas.toFixed(2) }}</strong>
           </p>
-
+        
           <p class="valor-destaque">
             Saldo líquido:
-            R$ {{ f.saldoLiquido.toFixed(2) }}
+            <strong>R$ {{ f.saldoLiquido.toFixed(2) }}</strong>
           </p>
         </section>
-        
         <section class="modulos">
         
           <h2>Operações</h2>

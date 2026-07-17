@@ -11,9 +11,15 @@ export interface ComissaoFuncionario {
 export interface FechamentoMensal {
   inicio: string;
   fim: string;
+
+  faturamentoAtendimentos: number;
+  faturamentoVendas: number;
   faturamentoTotal: number;
+
   faturamentoPorFormaPagamento: Record<string, number>;
+
   comissoesPorFuncionario: ComissaoFuncionario[];
+
   totalComissoes: number;
   totalDespesas: number;
   saldoLiquido: number;
