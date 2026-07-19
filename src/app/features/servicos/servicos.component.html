@@ -31,7 +31,7 @@
         </button>
 
         @if (servicoEmEdicao()) {
-          <button type="button" (click)="cancelarEdicao()">Cancelar</button>
+          <button type="button" class="botao-secundario" (click)="cancelarEdicao()">Cancelar</button>
         }
       </div>
     </form>
@@ -50,17 +50,22 @@
         <span>R$ {{ servico.preco.toFixed(2) }}</span>
 
         <div class="acoes-item">
-          <button type="button" (click)="editar(servico)">✏️ Editar</button>
-          <button type="button" (click)="desativar(servico)">🚫 Desativar</button>
+          <button type="button" class="botao-secundario" (click)="editar(servico)">
+            <i class="ti ti-edit" aria-hidden="true"></i>Editar
+          </button>
+          <button type="button" class="botao-perigo" (click)="desativar(servico)">
+            <i class="ti ti-ban" aria-hidden="true"></i>Desativar
+          </button>
         </div>
       </div>
     } @empty {
-      <p>Nenhum serviço cadastrado ainda.</p>
+      <p class="vazio">Nenhum serviço cadastrado ainda.</p>
     }
   </section>
 
   <section class="lista">
-    <button type="button" (click)="alternarInativos()">
+    <button type="button" class="botao-secundario" (click)="alternarInativos()">
+      <i class="ti" [class.ti-chevron-down]="!mostrarInativos()" [class.ti-chevron-up]="mostrarInativos()" aria-hidden="true"></i>
       {{ mostrarInativos() ? 'Ocultar desativados' : 'Ver serviços desativados' }}
     </button>
 
@@ -73,11 +78,13 @@
           <span>R$ {{ servico.preco.toFixed(2) }}</span>
 
           <div class="acoes-item">
-            <button type="button" (click)="reativar(servico)">♻️ Reativar</button>
+            <button type="button" class="botao-sucesso" (click)="reativar(servico)">
+              <i class="ti ti-recycle" aria-hidden="true"></i>Reativar
+            </button>
           </div>
         </div>
       } @empty {
-        <p>Nenhum serviço desativado no momento.</p>
+        <p class="vazio">Nenhum serviço desativado no momento.</p>
       }
     }
   </section>

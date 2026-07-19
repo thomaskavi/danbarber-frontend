@@ -80,6 +80,9 @@
         <option value="DINHEIRO">Dinheiro</option>
       </select>
 
+      <label for="observacao">Observação (opcional)</label>
+      <textarea id="observacao" formControlName="observacao"></textarea>
+
       <button type="submit" [disabled]="enviando()">
         {{ enviando() ? 'Registrando...' : 'Finalizar venda' }}
       </button>

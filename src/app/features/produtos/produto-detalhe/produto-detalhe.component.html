@@ -10,29 +10,38 @@
 
   @if (produto(); as p) {
     <section class="card">
-      <p><strong>Nome:</strong> {{ p.nome }}</p>
-      <p><strong>Preço:</strong> R$ {{ p.preco.toFixed(2) }}</p>
-      <p><strong>Estoque atual:</strong> {{ p.quantidadeEstoque }}</p>
+      <div class="linha-extrato">
+        <span>Nome</span>
+        <span>{{ p.nome }}</span>
+      </div>
+      <div class="linha-extrato">
+        <span>Preço</span>
+        <span>R$ {{ p.preco.toFixed(2) }}</span>
+      </div>
+      <div class="linha-extrato">
+        <span>Estoque atual</span>
+        <span>{{ p.quantidadeEstoque }}</span>
+      </div>
     </section>
 
     <section class="grid-modulos">
       <a [routerLink]="['/produtos', p.id, 'editar']" class="modulo">
-        <span class="icone">✏️</span>
+        <span class="icone"><i class="ti ti-edit" aria-hidden="true"></i></span>
         <span>Editar produto</span>
       </a>
 
       <a [routerLink]="['/produtos', p.id, 'ajuste-estoque']" class="modulo">
-        <span class="icone">📦</span>
+        <span class="icone"><i class="ti ti-package" aria-hidden="true"></i></span>
         <span>Ajustar estoque</span>
       </a>
 
       <a [routerLink]="['/produtos', p.id, 'movimentacoes']" class="modulo">
-        <span class="icone">📊</span>
+        <span class="icone"><i class="ti ti-chart-bar" aria-hidden="true"></i></span>
         <span>Movimentações</span>
       </a>
 
-      <button type="button" class="modulo" (click)="desativar()">
-        <span class="icone">🚫</span>
+      <button type="button" class="modulo modulo-perigo" (click)="desativar()">
+        <span class="icone"><i class="ti ti-ban" aria-hidden="true"></i></span>
         <span>Desativar produto</span>
       </button>
     </section>

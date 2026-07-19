@@ -1,7 +1,7 @@
 .produtos-lista {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: auto;
-  padding: 40px 24px;
+  padding: 40px 24px 64px;
 }
 
 .produtos-lista header {
@@ -9,18 +9,39 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
   gap: 12px;
 }
 
+.produtos-lista header h1 {
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+.header-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .busca {
+  position: relative;
   margin-bottom: 20px;
+}
+
+.busca i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 16px;
 }
 
 .busca input {
   width: 100%;
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 11px 14px 11px 40px;
 }
 
 .item-produto {
@@ -32,15 +53,16 @@
   color: var(--text);
   border: none;
   border-bottom: 1px solid var(--border);
-  padding: 18px;
+  padding: 16px 4px;
   text-align: left;
   cursor: pointer;
   font-family: inherit;
+  border-radius: 0;
   transition: var(--transition);
 }
 
 .item-produto:hover {
-  background: #f5f6f8;
+  background: var(--surface-muted);
 }
 
 .item-produto:last-child {
@@ -53,23 +75,40 @@
   gap: 4px;
 }
 
+.info-produto strong {
+  font-weight: 500;
+  font-size: .9rem;
+}
+
+.info-produto > span:nth-child(2) {
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  color: var(--text-light);
+}
+
+.info-produto > span:last-child {
+  font-size: .78rem;
+  color: var(--text-muted);
+}
+
 .estoque-baixo {
   color: var(--danger);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .badge-alerta {
-  background: var(--danger);
-  color: white;
-  font-size: 0.7rem;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: .7rem;
+  font-weight: 600;
   padding: 2px 8px;
-  border-radius: 8px;
+  border-radius: 20px;
   margin-left: 6px;
 }
 
 .seta {
-  font-size: 1.5rem;
-  color: var(--primary);
+  font-size: 18px;
+  color: var(--text-muted);
 }
 
 .paginacao {
@@ -78,4 +117,6 @@
   align-items: center;
   gap: 16px;
   margin-top: 24px;
+  font-size: .85rem;
+  color: var(--text-light);
 }

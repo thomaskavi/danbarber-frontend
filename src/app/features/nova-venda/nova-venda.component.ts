@@ -43,6 +43,7 @@ export class NovaVendaComponent implements OnInit {
   form = this.fb.group({
     nomeCliente: [''],
     formaPagamento: ['' as FormaPagamento, Validators.required],
+    observacao: [''],
   });
 
   private busca$ = new Subject<string>();
@@ -148,13 +149,14 @@ export class NovaVendaComponent implements OnInit {
     this.vendaService.registrar({
       nomeCliente: this.form.value.nomeCliente || undefined,
       formaPagamento: this.form.value.formaPagamento!,
+      observacao: this.form.value.observacao || undefined,
       itens,
     }).subscribe({
       next: () => {
         this.enviando.set(false);
         this.notificacao.sucesso('Venda registrada com sucesso!');
         this.carrinho.set([]);
-        this.form.reset({ nomeCliente: '', formaPagamento: '' as FormaPagamento });
+        this.form.reset({ nomeCliente: '', formaPagamento: '' as FormaPagamento, observacao: '' });
       },
       error: (err) => {
         this.enviando.set(false);

@@ -101,3 +101,26 @@
     font-size:.85rem;
 
 }
+
+/* variante para ações destrutivas dentro de um grid de módulos (ex: "Desativar produto") */
+.modulo.modulo-perigo{
+    border-color:var(--danger-soft);
+}
+
+.modulo.modulo-perigo .icone{
+    background:var(--danger-soft);
+    color:var(--danger);
+}
+
+.modulo.modulo-perigo span:last-child{
+    color:var(--danger);
+}
+
+.modulo.modulo-perigo:hover{
+    border-color:var(--danger);
+    background:var(--danger-soft);
+}
+
+.modulo.modulo-perigo:hover .icone{
+    background:var(--surface);
+}

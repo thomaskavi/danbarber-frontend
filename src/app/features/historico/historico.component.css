@@ -6,13 +6,109 @@
 
 .abas button {
   background: transparent;
+  color: var(--text-light);
+  border: 1px solid var(--border-strong);
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: .85rem;
+  font-weight: 500;
+}
+
+.abas button:hover:not(.aba-ativa) {
+  border-color: var(--primary);
   color: var(--primary);
-  border: 1.5px solid var(--primary);
-  padding: 10px 20px;
-  border-radius: 10px;
+  background: var(--primary-soft);
 }
 
 .abas button.aba-ativa {
   background: var(--primary);
   color: white;
+  border-color: var(--primary);
+}
+
+/* atalhos de período — estilo global em _buttons.css (.filtro .atalhos button) */
+.filtro label {
+  font-size: .8rem;
+  color: var(--text-light);
+  font-weight: 500;
+  margin-right: 6px;
+}
+
+.filtro input[type="date"] {
+  width: auto;
+  margin-right: 16px;
+}
+
+/* resumo do período */
+.resumo p {
+  display: flex;
+  justify-content: space-between;
+  font-size: .85rem;
+  color: var(--text-light);
+  padding: 4px 0;
+}
+
+.resumo p strong {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* lista — grid para manter as colunas alinhadas entre as linhas */
+.lista .item {
+  display: grid;
+  grid-template-columns: 130px 1fr 1fr 120px 140px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .82rem;
+}
+
+.lista .item:last-child {
+  border: none;
+}
+
+.lista .item strong {
+  font-weight: 500;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lista .item span {
+  color: var(--text-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* penúltimo span = valor + forma de pagamento */
+.lista .item span:nth-last-child(2) {
+  font-family: var(--font-mono);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* último span = observação */
+.lista .item span:last-child {
+  color: var(--text-muted);
+  font-size: .78rem;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .lista .item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .lista .item strong,
+  .lista .item span {
+    white-space: normal;
+    text-align: left;
+  }
 }

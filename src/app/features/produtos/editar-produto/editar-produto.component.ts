@@ -19,7 +19,7 @@ export class EditarProdutoComponent implements OnInit {
   private produtoService = inject(ProdutoService);
   private notificacao = inject(NotificacaoService);
 
-  private id!: number;
+  id!: number;
   carregando = signal(true);
   enviando = signal(false);
 

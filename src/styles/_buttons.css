@@ -16,6 +16,12 @@ button{
 
     cursor:pointer;
 
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
     transition:var(--transition);
 
 }
@@ -129,4 +135,54 @@ button:disabled{
 .botao-sair:hover{
     background:var(--surface-muted);
     color:var(--text);
+}
+
+/* variantes usadas em ações de item de lista (editar/desativar/reativar) */
+.botao-perigo{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:transparent;
+    color:var(--danger);
+    border:1px solid var(--danger);
+    padding:8px 14px;
+    border-radius:var(--radius-sm);
+    font-size:.8rem;
+    font-weight:500;
+}
+
+.botao-perigo:hover{
+    background:var(--danger-soft);
+}
+
+.botao-sucesso{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:transparent;
+    color:var(--success);
+    border:1px solid var(--success);
+    padding:8px 14px;
+    border-radius:var(--radius-sm);
+    font-size:.8rem;
+    font-weight:500;
+}
+
+.botao-sucesso:hover{
+    background:var(--success-soft);
+}
+
+/* atalhos de período dentro de um .filtro (usado em Histórico e Despesas) */
+.filtro .atalhos button{
+    background:transparent;
+    border:1px solid var(--border-strong);
+    color:var(--text-light);
+    font-size:.8rem;
+    padding:8px 14px;
+}
+
+.filtro .atalhos button:hover{
+    border-color:var(--primary);
+    color:var(--primary);
+    background:var(--primary-soft);
 }

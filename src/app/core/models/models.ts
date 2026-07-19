@@ -74,6 +74,7 @@ export interface VendaRequest {
   nomeCliente?: string;
   formaPagamento: FormaPagamento;
   itens: ItemVendaRequest[];
+  observacao?: string;
 }
 
 export interface ItemVendaResponse {
@@ -92,6 +93,7 @@ export interface VendaResponse {
   itens: ItemVendaResponse[];
   valorTotal: number;
   valorComissao: number;
+  observacao: string | null;
 }
 
 export interface CriarFuncionarioRequest {

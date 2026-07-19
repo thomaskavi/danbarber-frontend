@@ -52,6 +52,24 @@ header .subtitulo{
 
 }
 
+header a{
+
+    font-size:.85rem;
+
+    color:var(--text-light);
+
+    font-weight:500;
+
+    transition:var(--transition);
+
+}
+
+header a:hover{
+
+    color:var(--primary);
+
+}
+
 section{
 
     margin-top:24px;

@@ -58,9 +58,9 @@
   @if (jaFiltrou() && !carregando()) {
 
     <section class="resumo">
-      <p>Total faturado: <strong>R$ {{ valorTotalPeriodo().toFixed(2) }}</strong></p>
+      <p>Total faturado <strong>R$ {{ valorTotalPeriodo().toFixed(2) }}</strong></p>
       @if (aba() === 'ATENDIMENTOS' && !isEmpregador()) {
-        <p>Sua comissão no período: <strong>R$ {{ comissaoTotalPeriodo().toFixed(2) }}</strong></p>
+        <p>Sua comissão no período <strong>R$ {{ comissaoTotalPeriodo().toFixed(2) }}</strong></p>
       }
     </section>
 
@@ -69,15 +69,15 @@
         @for (atendimento of atendimentos(); track atendimento.id) {
           <div class="item">
             @if (isEmpregador()) {
-              <strong>{{ atendimento.funcionarioNome }}</strong>
+              <strong [title]="atendimento.funcionarioNome">{{ atendimento.funcionarioNome }}</strong>
             }
             <span>{{ atendimento.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
-            <span>{{ atendimento.nomesServicos.join(', ') }}</span>
+            <span [title]="atendimento.nomesServicos.join(', ')">{{ atendimento.nomesServicos.join(', ') }}</span>
             <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
-            <span>{{ atendimento.observacao || 'Sem observação' }}</span>
+            <span [title]="atendimento.observacao || 'Sem observação'">{{ atendimento.observacao || 'Sem observação' }}</span>
           </div>
         } @empty {
-          <p>Nenhum atendimento encontrado nesse período.</p>
+          <p class="vazio">Nenhum atendimento encontrado nesse período.</p>
         }
       </section>
     }
@@ -87,14 +87,15 @@
         @for (venda of vendas(); track venda.id) {
           <div class="item">
             @if (isEmpregador()) {
-              <strong>{{ venda.nomeVendedor }}</strong>
+              <strong [title]="venda.nomeVendedor">{{ venda.nomeVendedor }}</strong>
             }
             <span>{{ venda.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ venda.nomeCliente || 'Cliente não informado' }}</span>
-            <span>{{ venda.itens.map(i => i.nomeProduto + ' (' + i.quantidade + 'x)').join(', ') }}</span>
+            <span [title]="venda.itens.map(i => i.nomeProduto + ' (' + i.quantidade + 'x)').join(', ')">{{ venda.itens.map(i => i.nomeProduto + ' (' + i.quantidade + 'x)').join(', ') }}</span>
             <span>R$ {{ venda.valorTotal.toFixed(2) }} · {{ venda.formaPagamento }}</span>
+            <span [title]="venda.observacao || 'Sem observação'">{{ venda.observacao || 'Sem observação' }}</span>
           </div>
         } @empty {
-          <p>Nenhuma venda encontrada nesse período.</p>
+          <p class="vazio">Nenhuma venda encontrada nesse período.</p>
         }
       </section>
     }

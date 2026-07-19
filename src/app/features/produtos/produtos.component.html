@@ -1,12 +1,19 @@
 <div class="produtos-lista">
 
   <header>
-    <a routerLink="/dashboard" class="botao-secundario">← Voltar</a>
     <h1>Produtos</h1>
-    <a routerLink="/produtos/novo" class="botao-principal">+ Novo Produto</a>
+    <div class="header-acoes">
+      <a routerLink="/dashboard" class="botao-secundario">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i>Voltar
+      </a>
+      <a routerLink="/produtos/novo" class="botao-principal">
+        <i class="ti ti-plus" aria-hidden="true"></i>Novo produto
+      </a>
+    </div>
   </header>
 
   <div class="busca">
+    <i class="ti ti-search" aria-hidden="true"></i>
     <input
       type="text"
       placeholder="Buscar produto por nome..."
@@ -33,18 +40,22 @@
               }
             </span>
           </div>
-          <span class="seta">›</span>
+          <i class="ti ti-chevron-right seta" aria-hidden="true"></i>
         </button>
       } @empty {
-        <p>Nenhum produto encontrado.</p>
+        <p class="vazio">Nenhum produto encontrado.</p>
       }
     </section>
 
     @if (totalPaginas() > 1) {
       <div class="paginacao">
-        <button type="button" (click)="paginaAnterior()" [disabled]="paginaAtual() === 0">‹ Anterior</button>
+        <button type="button" class="botao-secundario" (click)="paginaAnterior()" [disabled]="paginaAtual() === 0">
+          <i class="ti ti-chevron-left" aria-hidden="true"></i>Anterior
+        </button>
         <span>Página {{ paginaAtual() + 1 }} de {{ totalPaginas() }}</span>
-        <button type="button" (click)="proximaPagina()" [disabled]="paginaAtual() + 1 >= totalPaginas()">Próxima ›</button>
+        <button type="button" class="botao-secundario" (click)="proximaPagina()" [disabled]="paginaAtual() + 1 >= totalPaginas()">
+          Próxima<i class="ti ti-chevron-right" aria-hidden="true"></i>
+        </button>
       </div>
     }
   }

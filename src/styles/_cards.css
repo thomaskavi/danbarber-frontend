@@ -227,3 +227,25 @@ hr.divisor{
     vertical-align:1px;
 
 }
+
+/* total genérico (rótulo normal + valor em destaque) — usado em novo atendimento,
+   nova venda e despesas, onde não faz sentido o cartão de extrato completo */
+.total-linha{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:baseline;
+
+    padding:14px 0;
+
+}
+
+.total-linha .rotulo{
+
+    font-size:.85rem;
+
+    color:var(--text-light);
+
+}

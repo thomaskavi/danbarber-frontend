@@ -1,0 +1,56 @@
+.login-container {
+  max-width: 400px;
+  margin: 72px auto;
+  padding: 36px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.login-container .marca {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 16px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.login-container h1 {
+  font-size: 1.35rem;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.login-container .subtitulo {
+  font-size: .8rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.login-container form {
+  text-align: left;
+}
+
+.login-container button[type="submit"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.login-container a {
+  display: block;
+  margin-top: 18px;
+  color: var(--primary);
+  font-weight: 500;
+  font-size: .85rem;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}

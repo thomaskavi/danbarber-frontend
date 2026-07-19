@@ -10,7 +10,6 @@ import { NotificacaoService } from '../../core/services/notificacao.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './registrar.component.html',
-  styleUrl: './registrar.component.css',
 })
 export class RegistrarComponent {
 
