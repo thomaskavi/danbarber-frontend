@@ -2,18 +2,45 @@
 
     color:var(--danger);
 
+    background:var(--danger-soft);
+
+    padding:10px 14px;
+
+    border-radius:var(--radius-sm);
+
     margin-top:10px;
 
-    font-weight:600;
+    font-weight:500;
+
+    font-size:.85rem;
 
 }
+
 .sucesso{
 
     color:var(--success);
 
+    background:var(--success-soft);
+
+    padding:10px 14px;
+
+    border-radius:var(--radius-sm);
+
     margin-top:10px;
 
-    font-weight:600;
+    font-weight:500;
+
+    font-size:.85rem;
+
+}
+
+.vazio{
+
+    color:var(--text-muted);
+
+    font-size:.85rem;
+
+    padding:16px 0;
 
 }
 
@@ -41,41 +68,21 @@
 
 .checkbox-servico{
 
-    background:white;
+    background:var(--surface);
 
     border:1px solid var(--border);
 
     padding:12px;
 
-    border-radius:10px;
+    border-radius:var(--radius-sm);
 
 }
 
 @media(max-width:768px){
 
-header{
+.lista-servicos{
 
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    gap:15px;
-
-}
-
-.item{
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    gap:10px;
-
-}
-
-.valor-destaque{
-
-    font-size:1.6rem;
+    grid-template-columns:1fr;
 
 }
 }

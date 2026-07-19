@@ -1,27 +1,43 @@
 :root{
 
-    --background:#F5F7FA;
-
+    /* superfícies */
+    --background:#F4F5F7;
     --surface:#FFFFFF;
+    --surface-muted:#FAFBFC;
 
-    --primary:#1E3A5F;
+    /* marca — verde-esmeralda (saldo, ações positivas) */
+    --primary:#1E5F4D;
+    --primary-hover:#17493B;
+    --primary-soft:#E3EFEA;
 
-    --primary-hover:#274B79;
+    /* destaque — "tinta de ouro", usar com moderação (totais, sublinhados) */
+    --accent:#A8762E;
+    --accent-soft:#F5EEE1;
 
-    --success:#16A34A;
+    /* estados */
+    --success:#2E7D46;
+    --success-soft:#E7F3EA;
+    --danger:#A23B32;
+    --danger-soft:#F8EBE9;
 
-    --danger:#DC2626;
+    /* texto */
+    --text:#10182B;
+    --text-light:#4B5468;
+    --text-muted:#8992A3;
 
-    --text:#1F2937;
+    /* bordas */
+    --border:#E1E4EA;
+    --border-strong:#C9CEDA;
 
-    --text-light:#6B7280;
-
-    --border:#E5E7EB;
-
-    --shadow:0 6px 18px rgba(0,0,0,.06);
-
+    /* elevação — flat, quase sem sombra */
+    --shadow:0 1px 3px rgba(16,24,43,.06);
+    --shadow-md:0 4px 14px rgba(16,24,43,.06);
     --radius:12px;
+    --radius-sm:8px;
+    --transition:.2s ease;
 
-    --transition:.25s;
-
+    /* tipografia */
+    --font-display:'Sora',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
 }

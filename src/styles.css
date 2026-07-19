@@ -1,6 +1,7 @@
 @import "./styles/_variables.css";
 @import "./styles/_reset.css";
 @import "./styles/_layout.css";
+@import "./styles/_modulos.css";
 @import "./styles/_cards.css";
 @import "./styles/_buttons.css";
 @import "./styles/_forms.css";

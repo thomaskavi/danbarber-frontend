@@ -1,19 +1,166 @@
 .card,
-.resumo,
-.lista,
 .form-despesa,
 .form-servico,
 .filtro{
 
     background:var(--surface);
 
+    border:1px solid var(--border);
+
     border-radius:var(--radius);
 
     padding:24px;
 
-    box-shadow:var(--shadow);
+    margin-bottom:20px;
 
-    margin-bottom:24px;
+}
+
+/* — Extrato / Fechamento do mês — */
+
+.resumo{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:24px;
+
+    margin-bottom:20px;
+
+}
+
+.resumo h2{
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+    margin-bottom:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.resumo h2 i{
+
+    color:var(--primary);
+
+    font-size:1.05rem;
+
+}
+
+.linha-extrato{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:.85rem;
+
+    color:var(--text-light);
+
+    padding:7px 0;
+
+}
+
+.linha-extrato span:last-child{
+
+    font-family:var(--font-mono);
+
+    color:var(--text);
+
+    font-weight:500;
+
+}
+
+.linha-extrato.saida span:last-child{
+
+    color:var(--danger);
+
+}
+
+hr.divisor{
+
+    border:none;
+
+    border-top:1px solid var(--border);
+
+    margin:6px 0;
+
+}
+
+.saldo-liquido{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:baseline;
+
+    padding-top:16px;
+
+}
+
+.saldo-liquido .rotulo{
+
+    font-size:.85rem;
+
+    color:var(--text-light);
+
+}
+
+/* número em destaque — usado no saldo líquido e na comissão do funcionário */
+.valor-destaque{
+
+    font-family:var(--font-mono);
+
+    font-size:1.7rem;
+
+    font-weight:600;
+
+    color:var(--primary);
+
+}
+
+.saldo-liquido .valor-destaque{
+
+    border-bottom:2px solid var(--accent);
+
+    padding-bottom:2px;
+
+}
+
+/* — Listas (comissão por funcionário, atendimentos/vendas de hoje) — */
+
+.lista{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:6px 24px;
+
+    margin-bottom:20px;
+
+}
+
+.lista h2{
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+    padding:16px 0;
+
+    border-bottom:1px solid var(--border);
 
 }
 
@@ -25,9 +172,11 @@
 
     align-items:center;
 
-    padding:18px 0;
+    padding:14px 0;
 
     border-bottom:1px solid var(--border);
+
+    font-size:.85rem;
 
 }
 
@@ -37,12 +186,44 @@
 
 }
 
-.valor-destaque{
+.item strong{
 
-    font-size:2rem;
+    font-weight:500;
 
-    font-weight:bold;
+    color:var(--text);
 
-    color:var(--primary);
+}
+
+.item span{
+
+    color:var(--text-light);
+
+}
+
+.item span:last-child{
+
+    font-family:var(--font-mono);
+
+    color:var(--text);
+
+    font-weight:500;
+
+}
+
+.dot{
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    display:inline-block;
+
+    margin-right:8px;
+
+    vertical-align:1px;
 
 }
