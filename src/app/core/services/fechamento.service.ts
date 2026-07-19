@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 export interface ComissaoFuncionario {
-  FuncionarioId: number;
+  funcionarioId: number;
   nomeFuncionario: string;
   totalComissao: number;
 }

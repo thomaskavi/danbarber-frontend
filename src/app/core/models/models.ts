@@ -91,6 +91,7 @@ export interface VendaResponse {
   formaPagamento: FormaPagamento;
   itens: ItemVendaResponse[];
   valorTotal: number;
+  valorComissao: number;
 }
 
 export interface CriarFuncionarioRequest {
