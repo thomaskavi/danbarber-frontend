@@ -8,11 +8,12 @@ import { ServicoService } from '../../core/services/servico.service';
 import { UsuarioService, UsuarioResponse } from '../../core/services/usuario.service';
 import { ServicoResponse, FormaPagamento } from '../../core/models/models';
 import { RouterLink } from '@angular/router';
+import { FormaPagamentoPipe } from "../../shared/pipes/forma-pagamento-pipe";
 
 @Component({
   selector: 'app-novo-atendimento',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, FormaPagamentoPipe],
   templateUrl: './novo-atendimento.component.html',
 })
 export class NovoAtendimentoComponent implements OnInit {

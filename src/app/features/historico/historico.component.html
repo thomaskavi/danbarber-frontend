@@ -73,7 +73,9 @@
             }
             <span>{{ atendimento.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
             <span [title]="atendimento.nomesServicos.join(', ')">{{ atendimento.nomesServicos.join(', ') }}</span>
-            <span>R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento }}</span>
+            <span>
+              R$ {{ atendimento.valorTotal.toFixed(2) }} · {{ atendimento.formaPagamento | formaPagamento }}
+            </span>
             <span [title]="atendimento.observacao || 'Sem observação'">{{ atendimento.observacao || 'Sem observação' }}</span>
           </div>
         } @empty {
@@ -91,7 +93,9 @@
             }
             <span>{{ venda.dataHora | date:'dd/MM/yyyy HH:mm' }} · {{ venda.nomeCliente || 'Cliente não informado' }}</span>
             <span [title]="venda.itens.map(i => i.nomeProduto + ' (' + i.quantidade + 'x)').join(', ')">{{ venda.itens.map(i => i.nomeProduto + ' (' + i.quantidade + 'x)').join(', ') }}</span>
-            <span>R$ {{ venda.valorTotal.toFixed(2) }} · {{ venda.formaPagamento }}</span>
+            <span>
+              R$ {{ venda.valorTotal.toFixed(2) }} · {{ venda.formaPagamento | formaPagamento }}
+            </span>
             <span [title]="venda.observacao || 'Sem observação'">{{ venda.observacao || 'Sem observação' }}</span>
           </div>
         } @empty {

@@ -40,4 +40,8 @@
     --font-display:'Sora',sans-serif;
     --font-body:'Inter',sans-serif;
     --font-mono:'IBM Plex Mono',monospace;
+
+    /* Hover histórico */
+    --surface-hover: rgba(30, 95, 77, 0.04);
 }
+

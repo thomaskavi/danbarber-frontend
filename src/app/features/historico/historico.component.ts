@@ -6,13 +6,14 @@ import { AtendimentoService } from '../../core/services/atendimento.service';
 import { VendaService } from '../../core/services/venda.service';
 import { AtendimentoResponse, VendaResponse } from '../../core/models/models';
 import { dataParaDateTimeRange, hojeComoDate, dataMenosDias } from '../../core/utils/date-utils';
+import { FormaPagamentoPipe } from '../../shared/pipes/forma-pagamento-pipe';
 
 type AbaHistorico = 'ATENDIMENTOS' | 'VENDAS';
 
 @Component({
   selector: 'app-historico',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormaPagamentoPipe],
   templateUrl: './historico.component.html',
   styleUrl: './historico.component.css',
 })

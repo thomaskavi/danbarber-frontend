@@ -16,6 +16,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "../danbarber/src/main/resources/static",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -42,6 +43,17 @@
                 {
                    "replace": "src/environments/environment.ts",
                    "with": "src/environments/environment.production.ts"
+                }
+              ]
+            },
+            "desktop": {
+              "optimization": true,
+              "extractLicenses": true,
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desktop.ts"
                 }
               ]
             },

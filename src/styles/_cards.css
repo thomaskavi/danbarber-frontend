@@ -242,10 +242,51 @@ hr.divisor{
 
 }
 
+.item span,
+.item strong{
+
+    overflow-wrap:anywhere;
+    word-break:break-word;
+
+}
+
 .total-linha .rotulo{
 
     font-size:.85rem;
 
     color:var(--text-light);
+
+}@media (max-width: 768px){
+
+    .lista .item{
+
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:6px;
+
+        padding:18px 0;
+
+    }
+
+    .lista .item strong{
+
+        font-size:1rem;
+
+    }
+
+    .lista .item span{
+
+        font-size:.9rem;
+
+    }
+
+    .lista .item span:last-child{
+
+        font-size:1rem;
+        font-weight:600;
+        color:var(--primary);
+
+    }
 
 }

@@ -68,7 +68,7 @@
             <div class="item">
               <strong>{{ venda.nomeCliente || 'Cliente não informado' }}</strong>
               <span>{{ venda.itens.length }} {{ venda.itens.length === 1 ? 'item' : 'itens' }}</span>
-              <span>R$ {{ venda.valorTotal.toFixed(2) }} · {{ venda.formaPagamento }}</span>
+              <span>R$ {{ venda.valorTotal.toFixed(2) }} · {{ venda.formaPagamento | formaPagamento }}</span>
             </div>
           } @empty {
             <p class="vazio">Nenhuma venda hoje ainda.</p>
@@ -86,14 +86,14 @@
 
           @if (temModulo('ATENDIMENTOS')) {
             <div class="linha-extrato">
-              <span>Faturamento com atendimentos</span>
+              <span>Faturamento c/ atendimentos</span>
               <span>R$ {{ f.faturamentoAtendimentos.toFixed(2) }}</span>
             </div>
           }
 
           @if (temModulo('ESTOQUE_VENDAS')) {
             <div class="linha-extrato">
-              <span>Faturamento com vendas</span>
+              <span>Faturamento c/ vendas</span>
               <span>R$ {{ f.faturamentoVendas.toFixed(2) }}</span>
             </div>
           }
@@ -192,7 +192,8 @@
           @for (atendimento of atendimentosHoje(); track atendimento.id) {
             <div class="item">
               <strong>{{ atendimento.funcionarioNome }}</strong>
-              <span>{{ atendimento.nomeCliente || 'Cliente não informado' }} · {{ atendimento.nomesServicos.join(', ') }}</span>
+              <span>{{ atendimento.nomeCliente || 'Cliente não informado' }}</span>
+              <span>{{ atendimento.nomesServicos.join(', ') }}</span>
               <span>R$ {{ atendimento.valorTotal.toFixed(2) }}</span>
             </div>
           } @empty {
@@ -206,9 +207,16 @@
           <h2>Vendas de hoje</h2>
           @for (venda of vendasHoje(); track venda.id) {
             <div class="item">
+              
               <strong>{{ venda.nomeVendedor }}</strong>
-              <span>{{ venda.nomeCliente || 'Cliente não informado' }} · {{ venda.itens.length }} {{ venda.itens.length === 1 ? 'item' : 'itens' }}</span>
-              <span>R$ {{ venda.valorTotal.toFixed(2) }}</span>
+
+              <span>{{ venda.nomeCliente || 'Cliente não informado' }}</span>
+              <span>{{ venda.dataHora | date:' HH:mm dd/MM/yyyy'}}</span>
+              
+              <div class="valor-venda">
+                <strong>R$ {{ venda.valorTotal.toFixed(2) }}</strong>
+               
+              </div>
             </div>
           } @empty {
             <p class="vazio">Nenhuma venda hoje ainda.</p>

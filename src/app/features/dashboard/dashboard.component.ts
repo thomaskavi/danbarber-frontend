@@ -7,12 +7,15 @@ import { VendaService } from '../../core/services/venda.service';
 import { FechamentoService, FechamentoMensal } from '../../core/services/fechamento.service';
 import { AtendimentoResponse, VendaResponse } from '../../core/models/models';
 import { mesAtualComoDateTime, mesAtualComoDate, hojeComoDateTime } from '../../core/utils/date-utils';
+import { FormaPagamentoPipe } from "../../shared/pipes/forma-pagamento-pipe";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormaPagamentoPipe],
   templateUrl: './dashboard.component.html',
+  
+
 })
 export class DashboardComponent implements OnInit {
 

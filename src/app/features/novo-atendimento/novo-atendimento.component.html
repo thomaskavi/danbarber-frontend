@@ -48,7 +48,7 @@
       <select id="formaPagamento" formControlName="formaPagamento">
         <option value="">Selecione...</option>
         @for (forma of formasPagamento; track forma) {
-          <option [value]="forma">{{ forma }}</option>
+          <option [value]="forma">{{ forma | formaPagamento }}</option>
         }
       </select>
 
